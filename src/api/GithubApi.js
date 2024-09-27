@@ -1,4 +1,4 @@
-import request from "../utils/request.js";
+import { request, requestWithNoBaseUrl } from "../utils/request.js";
 import {useSettingsStore} from "../stores/settingsData.js";
 
 
@@ -32,22 +32,24 @@ export function upload(name, data) {
     })
 }
 
-export function uploadTest() {
+export function getGist() {
     const mSettingsStore = useSettingsStore();
 
-    // data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=
-    const requestData = {
-        message:'test img upload',
-        content: 'R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
-    }
     return request({
-        url:`/repos/${mSettingsStore.githubSettings.name}/${mSettingsStore.githubSettings.repo}/contents/`+"helloblack.jpg",
+        url:'/gists',
         headers:{
             "Accept":`application/vnd.github+json`,
-            "Authorization":`Bearer ${mSettingsStore.githubSettings.token}`,
+            "Authorization":`Bearer `,
             "X-GitHub-Api-Version": `2022-11-28`
         },
-        method:'put',
-        data: requestData
+        method:'get'
     })
 }
+
+export function getRaw(url) {
+    return requestWithNoBaseUrl({
+        url: url,
+        method: 'get'
+    })
+}
+
