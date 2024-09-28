@@ -1,11 +1,54 @@
+<template>
+
+  <div class="main_container">
+    <div class="tool_container">
+      <div class="tool_wrapper_container">
+        <div>
+          <el-button :icon="Plus" plain class="tool_item"></el-button>
+        </div>
+        <div>
+          <el-button :icon="RefreshRight" plain class="tool_item"></el-button>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="left_container">
+      <div class="left_wrapper_container">
+        <div v-for="item in gistDataArr"
+             :class="['left_item', currentClickItem.id === item.id ? 'active_item' : '']"
+             @click="handleClickLeftItem(item)">{{ item.description }}
+        </div>
+      </div>
+
+    </div>
+    <div class="right_container">
+      <div v-for="file in currentClickItem.files">
+        <div style="margin-bottom: 8px">
+          <el-text type="info" >{{ file.filename }}</el-text>
+        </div>
+
+        <el-input
+            v-model="file.rawContent"
+            autosize
+            type="textarea">
+        </el-input>
+      </div>
+    </div>
+
+  </div>
+
+</template>
 <script setup="GistTest">
 import {getGist, getRaw} from "../api/GithubApi.js";
 import {ref} from "vue";
+import {RefreshRight, Plus } from '@element-plus/icons-vue'
+
 
 const gistDataArr = ref([])
 
 
-const getGistArrBak = async ()=>{
+const getGistArrBak = async () => {
   getGist().then((res) => {
 
     const allData = res.data
@@ -15,7 +58,7 @@ const getGistArrBak = async ()=>{
       Object.values(item.files).forEach(async objValue => {
         const rawContent = await getContent(objValue.raw_url)
 
-        Object.assign(objValue,{rawContent: rawContent})
+        Object.assign(objValue, {rawContent: rawContent})
 
       });
     })
@@ -35,7 +78,7 @@ const getGistArr = async () => {
     const updatedDataPromises = allData.map(async (item) => {
       const filePromises = Object.values(item.files).map(async (objValue) => {
         const rawContent = await getContent(objValue.raw_url);
-        return Object.assign(objValue, { rawContent });
+        return Object.assign(objValue, {rawContent});
       });
 
       // 等待所有文件的内容都获取完
@@ -78,44 +121,81 @@ const testGetContent = async () => {
 
 // testGetContent()
 
-getGistArr()
+const currentClickItem = ref({})
 
+const handleClickLeftItem = (data) => {
+  console.log("handleClickLeftItem")
+  console.log(data)
+  currentClickItem.value = data
+
+}
+
+getGistArr()
 
 
 </script>
 
-<template>
 
-  <div>
+<style>
+* {
+  margin: 0;
+  padding: 0;
 
-    <div v-for="item in gistDataArr" class="item">
 
-      <div>{{ item.description }}</div>
-
-            <div v-for="file in item.files">
-
-                <div class="filename">{{file.filename}}</div>
-
-              <el-input v-model="file.rawContent"
-                  autosize
-                        type="textarea">
-
-              </el-input>
-            </div>
-
-    </div>
-
-  </div>
-
-</template>
-
-<style scoped>
-
-.item {
-  border-bottom: 2px solid #333;
-  padding: 10px;
 }
-.filename {
+
+.main_container {
+  display: flex;
+
+}
+
+.tool_container {
+  flex-basis: 50px;
+  border-right: 1px solid #f3f4f5;
+}
+.tool_wrapper_container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  position: sticky;
+  top: 0;
+}
+
+.tool_item {
+  margin-top: 10px;
+}
+
+.left_container {
+  min-height: 100vh;
+  height: auto;
+  width: 250px;
+  border-right: 1px solid #f3f4f5;
+}
+.left_wrapper_container {
+  position: sticky;
+  top: 0;
+}
+
+.left_item {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #f3f4f5;
+}
+
+.left_item.active_item {
   background: #f3f4f5;
 }
+
+.left_item:hover {
+  background: #f3f4f5;
+}
+
+.right_container {
+  height: 100vh;
+  width: 100%;
+  padding: 10px;
+}
+
 </style>
