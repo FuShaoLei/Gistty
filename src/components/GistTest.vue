@@ -67,14 +67,15 @@
     <GistAddOrUpdateDialog
         :show-dialog="isOpenAddOrUpdateDialog"
         v-if="isOpenAddOrUpdateDialog"
-        @close="closeAddOrUpdateDialog"/>
+        @close="closeAddOrUpdateDialog"
+        @confirm="handleConfirmAddOrUpdateDialog"/>
   </div>
 
 
 </template>
 <script setup="GistTest">
 import 'remixicon/fonts/remixicon.css'
-import {getGist, getRaw} from "../api/GithubApi.js";
+import {CreateGist, getGist, getRaw} from "../api/GithubApi.js";
 import {ref} from "vue";
 import {RefreshRight, Plus } from '@element-plus/icons-vue'
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
@@ -175,6 +176,23 @@ const closeAddOrUpdateDialog = () => {
   isOpenAddOrUpdateDialog.value = false
 }
 
+const handleConfirmAddOrUpdateDialog = (data) => {
+  console.log("handleConfirmAddOrUpdateDialog")
+  console.log(data)
+
+  CreateGist(data).then(res => {
+
+    console.log(res)
+    if (res.status === 201) {
+      closeAddOrUpdateDialog()
+      getGistArr()
+      // TODO 提示成功
+    } else {
+      // TODO 提示错误
+    }
+  })
+}
+
 getGistArr()
 
 
@@ -182,7 +200,6 @@ getGistArr()
 
 
 <style>
-
 @import url('src/style.css');
 
 </style>

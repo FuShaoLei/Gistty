@@ -46,6 +46,21 @@ export function getGist() {
     })
 }
 
+export function CreateGist(data) {
+    const mSettingsStore = useSettingsStore();
+
+    return request({
+        url:'/gists',
+        headers:{
+            "Accept":`application/vnd.github+json`,
+            "Authorization":`Bearer `,
+            "X-GitHub-Api-Version": `2022-11-28`
+        },
+        method:'post',
+        data: data
+    })
+}
+
 export function getRaw(url) {
     return requestWithNoBaseUrl({
         url: url,
