@@ -126,3 +126,17 @@ body {
   padding: var(--standard-distance);
   overflow: auto;
 }
+
+.list_button_plus {
+  text-align: center;
+  background: var(--color-border);
+  border-radius: 5px;
+}
+
+.list_button_plus:hover {
+  background: rgb(72, 72, 72);
+}
+
+.list_button_plus:active {
+  background: rgb(52, 52, 52);
+}

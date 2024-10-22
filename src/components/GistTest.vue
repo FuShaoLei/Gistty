@@ -38,11 +38,13 @@
           <i class="ri-hashtag"></i>
           工作
         </div>
-
       </div>
     </div>
 
     <div class="list_container">
+      <div class="list_button_plus standard_button" @click="openAddNewGistDialog">
+        <i class="ri-add-line ri-xl"></i>
+      </div>
       <div v-for="item in gistDataArr"
            :class="['list_button standard_button', currentClickItem.id === item.id ? 'active' : '']"
            @click="handleClickLeftItem(item)">
@@ -59,11 +61,15 @@
           <div class="detail_item_file"> {{ file.filename }} </div>
           <div class="detail_item_content"> <pre>{{file.rawContent}}</pre> </div>
         </div>
-
       </div>
     </div>
 
+    <GistAddOrUpdateDialog
+        :show-dialog="isOpenAddOrUpdateDialog"
+        v-if="isOpenAddOrUpdateDialog"
+        @close="closeAddOrUpdateDialog"/>
   </div>
+
 
 </template>
 <script setup="GistTest">
@@ -71,6 +77,7 @@ import 'remixicon/fonts/remixicon.css'
 import {getGist, getRaw} from "../api/GithubApi.js";
 import {ref} from "vue";
 import {RefreshRight, Plus } from '@element-plus/icons-vue'
+import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
 
 
 const gistDataArr = ref([])
@@ -156,6 +163,16 @@ const handleClickLeftItem = (data) => {
   console.log(data)
   currentClickItem.value = data
 
+}
+
+const isOpenAddOrUpdateDialog = ref(false)
+
+const openAddNewGistDialog = () => {
+  isOpenAddOrUpdateDialog.value = true
+}
+
+const closeAddOrUpdateDialog = () => {
+  isOpenAddOrUpdateDialog.value = false
 }
 
 getGistArr()
