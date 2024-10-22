@@ -1,38 +1,65 @@
 <template>
-
   <div class="main_container">
     <div class="tool_container">
-      <div class="tool_wrapper_container">
-        <div>
-          <el-button :icon="Plus" plain class="tool_item"></el-button>
+      <div class="tool_button">
+        <i class="ri-refresh-line ri-2x"></i>
+      </div>
+
+      <div class="tool_button">
+        <i class="ri-settings-line ri-2x"></i>
+      </div>
+
+      <div class="tool_button">
+        <i class="ri-question-line ri-2x"></i>
+      </div>
+    </div>
+    <div class="type_container">
+      <div class="type_button">
+        Mine
+      </div>
+      <div class="type_button">
+        Star
+      </div>
+      <div class="tag_container">
+        <div class="tag_line"></div>
+        <div class="tag_button standard_button">
+          <i class="ri-hashtag"></i>
+          日常
         </div>
-        <div>
-          <el-button :icon="RefreshRight" plain class="tool_item"></el-button>
+        <div class="tag_button standard_button">
+          <i class="ri-hashtag"></i>
+          备忘
+        </div>
+        <div class="tag_button standard_button">
+          <i class="ri-hashtag"></i>
+          技巧
+        </div>
+        <div class="tag_button standard_button">
+          <i class="ri-hashtag"></i>
+          工作
         </div>
 
       </div>
-
     </div>
-    <div class="left_container">
-      <div class="left_wrapper_container">
-        <div v-for="item in gistDataArr"
-             :class="['left_item', currentClickItem.id === item.id ? 'active_item' : '']"
-             @click="handleClickLeftItem(item)">{{ item.description }}
-        </div>
+
+    <div class="list_container">
+      <div v-for="item in gistDataArr"
+           :class="['list_button standard_button', currentClickItem.id === item.id ? 'active' : '']"
+           @click="handleClickLeftItem(item)">
+        {{ item.description }}
       </div>
-
     </div>
-    <div class="right_container">
-      <div v-for="file in currentClickItem.files">
-        <div style="margin-bottom: 8px">
-          <el-text type="info" >{{ file.filename }}</el-text>
+
+    <div class="detail_container">
+      <div class="detail_title">
+        {{currentClickItem.description}}
+      </div>
+      <div class="detail_content">
+        <div v-for="file in currentClickItem.files" class="detail_item">
+          <div class="detail_item_file"> {{ file.filename }} </div>
+          <div class="detail_item_content"> <pre>{{file.rawContent}}</pre> </div>
         </div>
 
-        <el-input
-            v-model="file.rawContent"
-            autosize
-            type="textarea">
-        </el-input>
       </div>
     </div>
 
@@ -40,6 +67,7 @@
 
 </template>
 <script setup="GistTest">
+import 'remixicon/fonts/remixicon.css'
 import {getGist, getRaw} from "../api/GithubApi.js";
 import {ref} from "vue";
 import {RefreshRight, Plus } from '@element-plus/icons-vue'
@@ -137,65 +165,7 @@ getGistArr()
 
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
 
-
-}
-
-.main_container {
-  display: flex;
-
-}
-
-.tool_container {
-  flex-basis: 50px;
-  border-right: 1px solid #f3f4f5;
-}
-.tool_wrapper_container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-
-  position: sticky;
-  top: 0;
-}
-
-.tool_item {
-  margin-top: 10px;
-}
-
-.left_container {
-  min-height: 100vh;
-  height: auto;
-  width: 250px;
-  border-right: 1px solid #f3f4f5;
-}
-.left_wrapper_container {
-  position: sticky;
-  top: 0;
-}
-
-.left_item {
-  cursor: pointer;
-  padding: 10px;
-  border-bottom: 1px solid #f3f4f5;
-}
-
-.left_item.active_item {
-  background: #f3f4f5;
-}
-
-.left_item:hover {
-  background: #f3f4f5;
-}
-
-.right_container {
-  height: 100vh;
-  width: 100%;
-  padding: 10px;
-}
+@import url('src/style.css');
 
 </style>
