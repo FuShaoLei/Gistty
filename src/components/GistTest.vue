@@ -1,7 +1,7 @@
 <template>
   <div class="main_container">
     <div class="tool_container">
-      <div class="tool_button">
+      <div class="tool_button" @click="refreshData">
         <i class="ri-refresh-line ri-2x"></i>
       </div>
 
@@ -52,9 +52,16 @@
       </div>
     </div>
 
-    <div class="detail_container">
-      <div class="detail_title">
-        {{currentClickItem.description}}
+    <div class="detail_container" v-if="currentClickItem.id !== undefined">
+      <div class="detail_title_container">
+        <div class="detail_title">
+          {{currentClickItem.description}}
+        </div>
+
+        <div class="detail_title_operate">
+          <div class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
+          <div class="text-hover"><i class="ri-delete-bin-line ri-xl"></i></div>
+        </div>
       </div>
       <div class="detail_content">
         <div v-for="file in currentClickItem.files" class="detail_item">
@@ -65,6 +72,7 @@
     </div>
 
     <GistAddOrUpdateDialog
+        ref="gistAddOrUpdateDialogRef"
         :show-dialog="isOpenAddOrUpdateDialog"
         v-if="isOpenAddOrUpdateDialog"
         @close="closeAddOrUpdateDialog"
@@ -75,11 +83,13 @@
 </template>
 <script setup="GistTest">
 import 'remixicon/fonts/remixicon.css'
-import {CreateGist, getGist, getRaw} from "../api/GithubApi.js";
-import {ref} from "vue";
+import {CreateGist, getGist, getRaw, UpdateGist} from "../api/GithubApi.js";
+import {getCurrentInstance, ref} from "vue";
 import {RefreshRight, Plus } from '@element-plus/icons-vue'
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
+const { proxy } =  getCurrentInstance()
 
+const gistAddOrUpdateDialogRef = ref(null)
 
 const gistDataArr = ref([])
 
@@ -125,6 +135,10 @@ const getGistArr = async () => {
     // 等待所有数据的更新操作完成
     const updatedData = await Promise.all(updatedDataPromises);
     gistDataArr.value = updatedData;
+
+    if (currentClickItem.value.id !== undefined) {
+      currentClickItem.value = gistDataArr.value.find(ele => ele.id === currentClickItem.value.id)
+    }
 
     console.log("allData", updatedData);
     // gistDataArr.value = updatedData;
@@ -180,17 +194,44 @@ const handleConfirmAddOrUpdateDialog = (data) => {
   console.log("handleConfirmAddOrUpdateDialog")
   console.log(data)
 
-  CreateGist(data).then(res => {
+  if (data.gist_id !== undefined) {
+    console.log("data.gist_id !== undefined")
 
-    console.log(res)
-    if (res.status === 201) {
-      closeAddOrUpdateDialog()
-      getGistArr()
-      // TODO 提示成功
-    } else {
-      // TODO 提示错误
-    }
+    UpdateGist(data).then(res => {
+      console.log("updateGist")
+      console.log(res)
+      handleRes(res)
+    })
+  } else {
+    console.log("data.gist_id === undefined")
+    CreateGist(data).then(res => {
+      console.log(res)
+      handleRes(res)
+    })
+  }
+
+}
+
+const handleRes = (res) => {
+  if (res.status === 201 || res.status === 200) {
+    closeAddOrUpdateDialog()
+    getGistArr()
+    // TODO 提示成功
+
+  } else {
+    // TODO 提示错误
+  }
+}
+
+const handleEditGist = () => {
+  isOpenAddOrUpdateDialog.value = true
+  proxy.$nextTick(() => {
+    gistAddOrUpdateDialogRef.value.init({...currentClickItem.value})
   })
+}
+
+const refreshData = () => {
+  getGistArr()
 }
 
 getGistArr()

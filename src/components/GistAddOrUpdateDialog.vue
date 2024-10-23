@@ -28,7 +28,7 @@
           </div>
           <div class="custom_button" @click="saveGist">
             <i class="ri-save-line"></i>
-            Create Gist
+            Save Gist
           </div>
         </div>
       </div>
@@ -65,15 +65,18 @@ const saveGist = () => {
   console.log(currentEditData.value)
 
   const tmpData = {...currentEditData.value}
-
   const requestFiles = tmpData.files.reduce((acc, item) => {
-    acc[item.filename] = {...item};
+    acc[item.filename] = {content: item.content};
     return acc;
   }, {});
 
   console.log("requestFiles", requestFiles);
 
-  Object.assign(tmpData, {files: requestFiles}, {public: false})
+  Object.assign(tmpData, {files: requestFiles})
+
+  if (tmpData.gist_id === undefined) {
+    Object.assign(tmpData, {public: false})
+  }
 
   console.log("after")
   console.log(tmpData)
@@ -85,7 +88,6 @@ const saveGist = () => {
 const handleAddFile = () => {
   console.log("handleAddFile")
   currentEditData.value.files.push({ content: "", filename: "" })
-  
 }
 
 const removeFile = (removeIndex) => {
@@ -93,6 +95,23 @@ const removeFile = (removeIndex) => {
     return index !== removeIndex
   })
 }
+
+const init = (data = undefined) => {
+  if (data === undefined) {
+
+  } else {
+    currentEditData.value = Object.assign({}, {
+      gist_id: data.id,
+      description: data.description,
+      files: Object.entries(data.files).map(([filename, fileData]) => ({
+        filename,
+        content: fileData.rawContent
+      }))
+    })
+  }
+}
+
+defineExpose({init})
 
 </script>
 <style scoped>

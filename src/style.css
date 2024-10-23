@@ -118,10 +118,23 @@ body {
   margin-left: calc(var(--width-type) + var(--width-list) + var(--width-tool));
 }
 
-.detail_title {
+.detail_title_container {
   border-bottom: 1px solid var(--color-border);
   padding: var(--standard-distance);
+
+  display: flex;
+  justify-content: space-between;
 }
+
+.detail_title_operate {
+  display: flex;
+}
+
+.detail_title_operate div {
+  cursor: pointer;
+  padding: 0 10px;
+}
+
 
 .detail_content {
   padding: var(--standard-distance);
