@@ -4,6 +4,9 @@ import {defineStore} from 'pinia'
 export const useSettingsStore = defineStore('settings', {
     state: () => {
         return {
+            loginData: {
+              token:""
+            },
             githubSettings: {
                 token: "",
                 name: "",
@@ -21,6 +24,9 @@ export const useSettingsStore = defineStore('settings', {
         },
         setOtherSettings(newOtherSettings) {
             this.otherSettings = newOtherSettings
+        },
+        setLoginSettings(newLoginSettings) {
+            this.loginData = newLoginSettings
         }
     },
     persist: true

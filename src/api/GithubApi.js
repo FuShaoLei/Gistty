@@ -39,7 +39,7 @@ export function getGist() {
         url:'/gists',
         headers:{
             "Accept":`application/vnd.github+json`,
-            "Authorization":`Bearer `,
+            "Authorization":`Bearer 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`,
             "X-GitHub-Api-Version": `2022-11-28`,
             "Cache-Control": "no-cache",
         },
@@ -54,7 +54,7 @@ export function CreateGist(data) {
         url:'/gists',
         headers:{
             "Accept":`application/vnd.github+json`,
-            "Authorization":`Bearer `,
+            "Authorization":`Bearer ${mSettingsStore.loginData.token}`,
             "X-GitHub-Api-Version": `2022-11-28`
         },
         method:'post',
@@ -69,7 +69,7 @@ export function UpdateGist(data) {
         url:`/gists/${data.gist_id}`,
         headers:{
             "Accept":`application/vnd.github+json`,
-            "Authorization":`Bearer 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`,
+            "Authorization":`Bearer ${mSettingsStore.loginData.token}`,
             "X-GitHub-Api-Version": `2022-11-28`
         },
         method:'patch',

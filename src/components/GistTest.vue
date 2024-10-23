@@ -12,6 +12,10 @@
       <div class="tool_button">
         <i class="ri-question-line ri-2x"></i>
       </div>
+
+      <div class="tool_button" @click="handleLogout">
+        <i class="ri-logout-circle-line ri-2x"></i>
+      </div>
     </div>
     <div class="type_container">
       <div class="type_button">
@@ -77,16 +81,23 @@
         v-if="isOpenAddOrUpdateDialog"
         @close="closeAddOrUpdateDialog"
         @confirm="handleConfirmAddOrUpdateDialog"/>
+
+    <LoginDialog :show-dialog="isShowLoginDialog"
+                 v-if="isShowLoginDialog"
+                @close="closeLoginDialog"
+                @confirm="confirmLoginDialog"/>
+
   </div>
 
 
 </template>
 <script setup="GistTest">
-import 'remixicon/fonts/remixicon.css'
 import {CreateGist, getGist, getRaw, UpdateGist} from "../api/GithubApi.js";
 import {getCurrentInstance, ref} from "vue";
 import {RefreshRight, Plus } from '@element-plus/icons-vue'
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
+import LoginDialog from "./LoginDialog.vue";
+import {useSettingsStore} from "../stores/settingsData.js";
 const { proxy } =  getCurrentInstance()
 
 const gistAddOrUpdateDialogRef = ref(null)
@@ -234,7 +245,52 @@ const refreshData = () => {
   getGistArr()
 }
 
-getGistArr()
+
+const isShowLoginDialog = ref(false)
+
+const closeLoginDialog = () => {
+  isShowLoginDialog.value = false
+}
+
+const openLoginDialog = () => {
+  isShowLoginDialog.value = true
+}
+
+const confirmLoginDialog = (data) => {
+  // TODO 存储
+  console.log("confirmLoginDialog")
+  console.log(data)
+
+  mSettingsStore.setLoginSettings({token: data})
+
+  console.log("after token")
+
+  console.log(mSettingsStore.loginData.token)
+
+  closeLoginDialog()
+
+  init()
+
+}
+
+const mSettingsStore = useSettingsStore()
+const init = () => {
+  // TODO 取出存储 看看是否有token
+  if (mSettingsStore.loginData.token.length === 0) {
+    // TODO 清除当前数据
+    openLoginDialog()
+  } else {
+    getGistArr()
+  }
+
+}
+
+const handleLogout = () => {
+  mSettingsStore.setLoginSettings({token: ""})
+  init()
+}
+
+init()
 
 
 </script>

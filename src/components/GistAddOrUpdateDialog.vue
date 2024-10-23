@@ -38,7 +38,6 @@
 </template>
 
 <script setup="GistAddOrUpdateDialog">
-import 'remixicon/fonts/remixicon.css'
 import {ref} from "vue";
 const props = defineProps({
   showDialog: {
