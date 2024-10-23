@@ -8,6 +8,7 @@
       <div class="edit_item" v-for="(item, index) in currentEditData.files" :key="index">
         <div class="edit_item_filename">
           <input type="text" placeholder="Filename including extension" class="custom_input" v-model="currentEditData.files[index].filename"/>
+          <div class="filename_close_btn text-hover" v-if="currentEditData.files.length > 1" @click="removeFile(index)"><i class="ri-close-line ri-xl"></i></div>
         </div>
         <div class="edit_item_content">
           <textarea id="message" name="message" rows="4" cols="50" placeholder="input here " class="custom_textarea" v-model="currentEditData.files[index].content"></textarea>
@@ -83,7 +84,14 @@ const saveGist = () => {
 
 const handleAddFile = () => {
   console.log("handleAddFile")
+  currentEditData.value.files.push({ content: "", filename: "" })
   
+}
+
+const removeFile = (removeIndex) => {
+  currentEditData.value.files = currentEditData.value.files.filter((value, index)=> {
+    return index !== removeIndex
+  })
 }
 
 </script>

@@ -61,11 +61,34 @@
 }
 
 .custom_button:hover {
-    background: rgb(52, 52, 52);
+    background: var(--color-hover);
 }
 .custom_button:active {
-    background: rgb(62, 62, 62);
+    background: var(--color-active);
 }
+
+.text-hover:hover {
+    color: var(--color-theme);
+}
+
+.text-hover:active {
+    color: var(--color-text-active);
+}
+
 .cancel_button {
     margin-right: 10px;
+}
+
+.edit_item_filename {
+    display: flex;
+    align-items: baseline;
+}
+
+.filename_close_btn {
+    cursor: pointer;
+    height: 100%;
+    padding: 3px 15px;
+}
+.filename_close_btn:hover {
+
 }

@@ -7,7 +7,14 @@
   --color-border: rgb(49, 49, 49);
   --standard-distance: 12px;
 
-  --color-hover: rgb(49, 49, 49);
+  --color-hover: rgb(52, 52, 52);
+  --color-active: rgb(62, 62, 62);
+
+  --color-theme: rgb(255, 96, 0);
+  --color-theme-2: rgb(255, 165, 89);
+
+  --color-text-hover: rgba(255, 255, 255, .8);
+  --color-text-active: rgba(255, 255, 255, .3);
 
   --width-tool: 50px;
   --width-type: 200px;
@@ -52,7 +59,7 @@ body {
   margin-bottom: var(--standard-distance);
 }
 .tool_button:hover {
-  color: green;
+  color: var(--color-theme);
 }
 
 .type_container {
@@ -82,7 +89,6 @@ body {
   border-top: 1px solid var(--color-border);
   margin: var(--standard-distance);
 }
-
 
 
 .list_container {
