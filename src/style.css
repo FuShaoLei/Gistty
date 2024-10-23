@@ -106,6 +106,7 @@ body {
 .list_button {
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .list_button.active{
