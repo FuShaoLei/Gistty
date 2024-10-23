@@ -2,20 +2,20 @@
   <div class="custom_dialog_wrapper">
     <div class="edit_container">
       <div class="edit_title">
-        <input type="text" placeholder="Gist description" class="custom_input" v-model="currentData.description"/>
+        <input type="text" placeholder="Gist description" class="custom_input" v-model="currentEditData.description"/>
       </div>
 
-      <div class="edit_item" v-for="(item, index) in currentData.files" :key="index">
+      <div class="edit_item" v-for="(item, index) in currentEditData.files" :key="index">
         <div class="edit_item_filename">
-          <input type="text" placeholder="Filename including extension" class="custom_input" v-model="currentData.files[index].filename"/>
+          <input type="text" placeholder="Filename including extension" class="custom_input" v-model="currentEditData.files[index].filename"/>
         </div>
         <div class="edit_item_content">
-          <textarea id="message" name="message" rows="4" cols="50" placeholder="input here " class="custom_textarea" v-model="currentData.files[index].content"></textarea>
+          <textarea id="message" name="message" rows="4" cols="50" placeholder="input here " class="custom_textarea" v-model="currentEditData.files[index].content"></textarea>
         </div>
       </div>
 
       <div class="add_file_wrapper">
-        <div class="add_file_button custom_button">
+        <div class="add_file_button custom_button" @click="handleAddFile">
           <i class="ri-add-line"></i>
           Add File
         </div>
@@ -49,22 +49,21 @@ const emit = defineEmits(['close', 'confirm'])
 
 const closeDialog = () => emit('close')
 
-const currentData = ref({
+const currentEditData = ref({
   files: [
     {
       content: "",
       filename: ""
     }
   ]
-
 })
 
 const saveGist = () => {
   // TODO 检查合法性
   console.log("saveGist")
-  console.log(currentData.value)
+  console.log(currentEditData.value)
 
-  const tmpData = {...currentData.value}
+  const tmpData = {...currentEditData.value}
 
   const requestFiles = tmpData.files.reduce((acc, item) => {
     acc[item.filename] = {...item};
@@ -80,6 +79,11 @@ const saveGist = () => {
 
   emit('confirm', tmpData)
 
+}
+
+const handleAddFile = () => {
+  console.log("handleAddFile")
+  
 }
 
 </script>
