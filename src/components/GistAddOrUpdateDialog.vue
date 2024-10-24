@@ -11,7 +11,7 @@
           <div class="filename_close_btn text-hover" v-if="currentEditData.files.length > 1" @click="removeFile(index)"><i class="ri-close-line ri-xl"></i></div>
         </div>
         <div class="edit_item_content">
-          <textarea id="message" name="message" rows="4" cols="50" placeholder="input here " class="custom_textarea" v-model="currentEditData.files[index].content"></textarea>
+          <textarea ref="contentRef" id="message" name="message" rows="4" cols="50" placeholder="input here " class="custom_textarea" v-model="currentEditData.files[index].content"></textarea>
         </div>
       </div>
 
@@ -95,9 +95,25 @@ const removeFile = (removeIndex) => {
   })
 }
 
+const contentRef = ref([])
+
 const init = (data = undefined) => {
   if (data === undefined) {
+    const now = new Date();
 
+  // 格式化日期
+    const formattedDate = now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0') + ' ' +
+        String(now.getHours()).padStart(2, '0') + ':' +
+        String(now.getMinutes()).padStart(2, '0') + ':' +
+        String(now.getSeconds()).padStart(2, '0');
+
+    console.log(formattedDate);
+
+    currentEditData.value.description = formattedDate;
+    currentEditData.value.files = [{content: "",  filename: "README.md"}]
+    contentRef.value[0].focus();
   } else {
     currentEditData.value = Object.assign({}, {
       gist_id: data.id,

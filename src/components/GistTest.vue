@@ -211,6 +211,9 @@ const isOpenAddOrUpdateDialog = ref(false)
 
 const openAddNewGistDialog = () => {
   isOpenAddOrUpdateDialog.value = true
+  proxy.$nextTick(() => {
+    gistAddOrUpdateDialogRef.value.init()
+  })
 }
 
 const closeAddOrUpdateDialog = () => {
