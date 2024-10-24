@@ -13,7 +13,7 @@
         <i class="ri-question-line ri-2x"></i>
       </div>
 
-      <div class="tool_button" @click="handleLogout">
+      <div class="tool_button" @click="openLogoutConfirmDialog">
         <i class="ri-logout-circle-line ri-2x"></i>
       </div>
     </div>
@@ -64,13 +64,13 @@
 
         <div class="detail_title_operate">
           <div class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
-          <div class="text-hover"><i class="ri-delete-bin-line ri-xl"></i></div>
+          <div class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>
         </div>
       </div>
       <div class="detail_content">
         <div v-for="file in currentClickItem.files" class="detail_item">
           <div class="detail_item_file"> {{ file.filename }} </div>
-          <div class="detail_item_content"> <pre>{{file.rawContent}}</pre> </div>
+          <div class="detail_item_content"> <pre>{{file.rawContent}}</pre></div>
         </div>
       </div>
     </div>
@@ -87,17 +87,33 @@
                 @close="closeLoginDialog"
                 @confirm="confirmLoginDialog"/>
 
+    <SecondConfirmDialog
+        title="Confirm Logout ?"
+        :show-dialog="isShowLogoutConfirmDialog"
+        v-if="isShowLogoutConfirmDialog"
+        @close="closeLogoutConfirmDialog"
+        @confirm="confirmLogoutConfirmDialog"/>
+
+    <SecondConfirmDialog
+        title="Confirm Delete ?"
+        :show-dialog="isShowDeleteConfirmDialog"
+        v-if="isShowDeleteConfirmDialog"
+        @close="closeDeleteConfirmDialog"
+        @confirm="confirmDeleteConfirmDialog"/>
+
+
   </div>
 
 
 </template>
 <script setup="GistTest">
-import {CreateGist, getGist, getRaw, UpdateGist} from "../api/GithubApi.js";
+import {CreateGist, DeleteGist, getGist, getRaw, UpdateGist} from "../api/GithubApi.js";
 import {getCurrentInstance, ref} from "vue";
 import {RefreshRight, Plus } from '@element-plus/icons-vue'
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
 import LoginDialog from "./LoginDialog.vue";
 import {useSettingsStore} from "../stores/settingsData.js";
+import SecondConfirmDialog from "./SecondConfirmDialog.vue";
 const { proxy } =  getCurrentInstance()
 
 const gistAddOrUpdateDialogRef = ref(null)
@@ -278,17 +294,54 @@ const init = () => {
   // TODO 取出存储 看看是否有token
   if (mSettingsStore.loginData.token.length === 0) {
     // TODO 清除当前数据
+    currentClickItem.value = {}
+    gistDataArr.value = []
     openLoginDialog()
   } else {
     getGistArr()
   }
-
 }
 
-const handleLogout = () => {
+const isShowDeleteConfirmDialog = ref(false)
+
+const openDeleteConfirmDialog = () => {
+  isShowDeleteConfirmDialog.value = true
+}
+
+const closeDeleteConfirmDialog = () => {
+  isShowDeleteConfirmDialog.value = false
+}
+
+const confirmDeleteConfirmDialog = () => {
+  DeleteGist(currentClickItem.value).then(res=>{
+    if (res.status === 204) {
+      currentClickItem.value = {}
+      closeDeleteConfirmDialog()
+      init()
+    }
+  })
+}
+
+const isShowLogoutConfirmDialog = ref(false)
+
+const openLogoutConfirmDialog = () => {
+  isShowLogoutConfirmDialog.value = true
+}
+
+const closeLogoutConfirmDialog = () => {
+  isShowLogoutConfirmDialog.value = false
+}
+
+const confirmLogoutConfirmDialog = () => {
   mSettingsStore.setLoginSettings({token: ""})
+  closeLogoutConfirmDialog()
   init()
 }
+
+const handleDeleteGist = () => {
+  openDeleteConfirmDialog()
+}
+
 
 init()
 

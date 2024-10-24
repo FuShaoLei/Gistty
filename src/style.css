@@ -191,3 +191,44 @@ body {
 .login_button:active {
   background: rgb(62, 62, 62);
 }
+
+
+.confirm_container {
+  padding: var(--standard-distance);
+  width: 400px;
+  background: rgb(33, 33, 33);
+  margin: auto;
+  margin-top: 50px;
+}
+
+.confirm_operate {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  /* 平分空间 */
+}
+
+.confirm_operate div {
+  flex: 1;
+  /* 每个 div 占据相同的宽度 */
+  text-align: center;
+  padding: var(--standard-distance);
+  background: rgb(52, 52, 52);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.confirm_operate div:hover {
+  background: rgb(72, 72, 72);
+}
+
+.confirm_operate div:active {
+  background: rgb(62, 62, 62);
+}
+
+.confirm_operate div:first-child{
+  margin-right: 5px;
+}
+
+.confirm_operate div:last-child{
+  margin-left: 5px;
+}

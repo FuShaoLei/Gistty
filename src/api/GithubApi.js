@@ -77,6 +77,19 @@ export function UpdateGist(data) {
     })
 }
 
+export function DeleteGist(data) {
+    const mSettingsStore = useSettingsStore();
+
+    return request({
+        url:`/gists/${data.id}`,
+        headers:{
+            "Accept":`application/vnd.github+json`,
+            "Authorization":`Bearer ${mSettingsStore.loginData.token}`,
+            "X-GitHub-Api-Version": `2022-11-28`
+        },
+        method:'delete'
+    })
+}
 
 
 export function getRaw(url) {
