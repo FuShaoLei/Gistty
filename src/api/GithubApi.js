@@ -39,7 +39,7 @@ export function getGist() {
         url:'/gists',
         headers:{
             "Accept":`application/vnd.github+json`,
-            "Authorization":`Bearer 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`,
+            "Authorization":`Bearer ${mSettingsStore.loginData.token}`,
             "X-GitHub-Api-Version": `2022-11-28`,
             "Cache-Control": "no-cache",
         },
