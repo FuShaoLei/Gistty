@@ -18,38 +18,42 @@
       </div>
     </div>
     <div class="type_container">
-      <div class="type_button">
+      <div
+          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Mine') ? 'active' : '']"
+          @click="handleClickType('Mine')"
+      >
         Mine
       </div>
-      <div class="type_button">
+      <div
+          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Star') ? 'active' : '']"
+          @click="handleClickType('Star')"
+      >
         Star
       </div>
       <div class="tag_container">
         <div class="tag_line"></div>
-        <div class="tag_button standard_button">
+        <div
+            :class="['tag_button standard_button', (topShowData.type === 'tag' && topShowData.name === key) ? 'active' : '']"
+             v-for="key in tagDataArr.keys()" @click="handleClickTag(key)">
           <i class="ri-hashtag"></i>
-          日常
-        </div>
-        <div class="tag_button standard_button">
-          <i class="ri-hashtag"></i>
-          备忘
-        </div>
-        <div class="tag_button standard_button">
-          <i class="ri-hashtag"></i>
-          技巧
-        </div>
-        <div class="tag_button standard_button">
-          <i class="ri-hashtag"></i>
-          工作
+          {{ key }}
         </div>
       </div>
     </div>
 
     <div class="list_container">
+      <div class="list_container_top">
+        <div class="list_button_toggle">
+          <i class="ri-menu-unfold-2-line ri-xl"></i>
+        </div>
+        <div class="list_top_text">
+          {{ topShowData.name }}
+        </div>
+      </div>
       <div class="list_button_plus standard_button" @click="openAddNewGistDialog">
         <i class="ri-add-line ri-xl"></i>
       </div>
-      <div v-for="item in gistDataArr"
+      <div v-for="item in showGistData"
            :class="['list_button standard_button', currentClickItem.id === item.id ? 'active' : '']"
            @click="handleClickLeftItem(item)">
         {{ item.description }}
@@ -109,7 +113,6 @@
 <script setup="GistTest">
 import {CreateGist, DeleteGist, getGist, getRaw, UpdateGist} from "../api/GithubApi.js";
 import {getCurrentInstance, ref} from "vue";
-import {RefreshRight, Plus } from '@element-plus/icons-vue'
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
 import LoginDialog from "./LoginDialog.vue";
 import {useSettingsStore} from "../stores/settingsData.js";
@@ -118,27 +121,23 @@ const { proxy } =  getCurrentInstance()
 
 const gistAddOrUpdateDialogRef = ref(null)
 
-const gistDataArr = ref([])
+const gistDataArr = ref([]) // 我的全部数据
 
+const showGistData = ref([]) // 实际展示的数据 有可能是 我的， 也可能是star的
 
-const getGistArrBak = async () => {
-  getGist().then((res) => {
+const tagDataArr = ref(new Map())
 
-    const allData = res.data
-
-    allData.forEach((item) => {
-      console.log("-----")
-      Object.values(item.files).forEach(async objValue => {
-        const rawContent = await getContent(objValue.raw_url)
-
-        Object.assign(objValue, {rawContent: rawContent})
-
-      });
-    })
-
-    console.log("allData")
-    console.log(allData)
-    // gistDataArr.value = res.data
+const handleTagData = (arr, id) => {
+  arr.forEach((item) => {
+    if (!tagDataArr.value.has(item)) {
+      let newSet = new Set()
+      newSet.add(id)
+      tagDataArr.value.set(item, newSet);
+    } else {
+      let currentSet = tagDataArr.value.get(item)
+      currentSet.add(id)
+      tagDataArr.value.set(item, currentSet);
+    }
   })
 }
 
@@ -161,14 +160,41 @@ const getGistArr = async () => {
 
     // 等待所有数据的更新操作完成
     const updatedData = await Promise.all(updatedDataPromises);
+
+    updatedData.forEach(ele => {
+      console.log("ele.description = " + ele.description)
+      // let tags = ele.description.match(/#(\w+)/g).map(tag => tag.slice(1));
+      // const text = "这里是一些文字，其中包含 #life #coding #生命 #生活";
+
+      if (ele.description !== undefined && ele.description !== null) {
+
+        const matchData = ele.description.match(/#([\w\u4e00-\u9fa5]+)/g);
+
+        if(matchData !== null) {
+          let tags = matchData.map(tag => tag.slice(1));
+
+          if (tags.length > 0) {
+            console.log(tags); // 输出: ["life", "coding"]
+            handleTagData(tags, ele.id)
+          }
+        }
+      }
+    })
+
+    console.log("tagDataArr.value")
+    console.log(tagDataArr.value)
+
     gistDataArr.value = updatedData;
+
+    // TODO 可能要处理一些东西
+
+    showGistData.value = [...gistDataArr.value]
+
 
     if (currentClickItem.value.id !== undefined) {
       currentClickItem.value = gistDataArr.value.find(ele => ele.id === currentClickItem.value.id)
     }
 
-    console.log("allData", updatedData);
-    // gistDataArr.value = updatedData;
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -345,6 +371,33 @@ const handleDeleteGist = () => {
   openDeleteConfirmDialog()
 }
 
+
+const topShowData = ref({type: "type", name: "Mine"}) // default display Mine Gist
+
+const handleClickTag = (key) => {
+  console.log("handleClickTag", key)
+  topShowData.value = {type: "tag", name: key}
+  // TODO 处理数据的展示
+
+  // TODO 名称后面改成tagMap
+  const idSet = tagDataArr.value.get(key)
+
+  showGistData.value = [...gistDataArr.value].filter(ele => idSet.has(ele.id))
+
+  currentClickItem.value = {}
+}
+
+const handleClickType = (key) => {
+  topShowData.value = {type: "type", name: key}
+  if (key === 'Star') {
+    // TODO 请求Star的数据
+  } else if (key === 'Mine') {
+    // TODO 请求我的自己全部gist数据
+
+    // TODO 这里应该重新请求一次，为了好看先用原来的数据
+    showGistData.value = [...gistDataArr.value]
+  }
+}
 
 init()
 

@@ -17,7 +17,7 @@
   --color-text-active: rgba(255, 255, 255, .3);
 
   --width-tool: 50px;
-  --width-type: 0px;
+  --width-type: 200px;
   --width-list: 300px;
 }
 
@@ -63,7 +63,6 @@ body {
 }
 
 .type_container {
-  display: none;
   border-right: 1px solid var(--color-border);
   width: var(--width-type);
   height: 100vh;
@@ -232,4 +231,31 @@ body {
 
 .confirm_operate div:last-child{
   margin-left: 5px;
+}
+
+
+.list_container_top {
+  margin-bottom: var(--standard-distance);
+  display: flex;
+  align-items: center;
+}
+
+.list_button_toggle {
+  margin-left: var(--standard-distance);
+  cursor: pointer;
+}
+
+.list_top_text {
+  margin-left: 5px;
+}
+
+
+.tag_button.active{
+  background: var(--color-border);
+  border-radius: 5px;
+}
+
+.type_button.active{
+  background: var(--color-border);
+  border-radius: 5px;
 }
