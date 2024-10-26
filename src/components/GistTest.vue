@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <div :class="['detail_container', isToggle ? 'type_gone':'']" v-show="currentClickItem.id !== undefined">
+    <div :class="['detail_container', isToggle ? 'type_gone':'']" v-show="currentClickItem.id !== undefined" ref="detailContainerRef">
       <div class="detail_title_container">
         <div class="detail_title">
           {{currentClickItem.description}}
@@ -76,7 +76,10 @@
       <div class="detail_content">
         <div v-for="file in currentClickItem.files" class="detail_item">
           <div class="detail_item_file"> {{ file.filename }} </div>
-          <div class="detail_item_content"><pre>{{file.rawContent}}</pre></div>
+          <div class="detail_item_content"><pre v-if="file.language !== 'Markdown'">{{ file.rawContent}}</pre>
+            <div class="markdown-body" v-else-if="file.rawContent !==undefined " v-html="marked.parse(file.rawContent)">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -120,7 +123,9 @@ import LoginDialog from "./LoginDialog.vue";
 import {useSettingsStore} from "../stores/settingsData.js";
 import SecondConfirmDialog from "./SecondConfirmDialog.vue";
 const { proxy } =  getCurrentInstance()
+import { marked } from 'marked';
 
+const detailContainerRef = ref(null)
 const gistAddOrUpdateDialogRef = ref(null)
 
 const allGistData = ref([]) // 我的全部数据
@@ -242,6 +247,8 @@ const handleClickLeftItem = async (data) => {
   console.log(data)
   currentClickItem.value = data
   currentClickItem.value = await handleGetRawContentData(data)
+
+  detailContainerRef.value.scrollIntoView({ block: 'start' });
 
 }
 
@@ -423,5 +430,6 @@ init()
 
 <style>
 @import url('src/style.css');
+@import url('src/Markdown.css');
 
 </style>

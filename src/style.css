@@ -16,14 +16,17 @@
   --color-text-hover: rgba(255, 255, 255, .8);
   --color-text-active: rgba(255, 255, 255, .3);
 
+  --color-text: rgb(255, 255, 255);
+  --color-bg: rgb(26, 26, 26);
+
   --width-tool: 50px;
   --width-type: 200px;
   --width-list: 300px;
 }
 
 body {
-  background: rgb(26, 26, 26);
-  color: rgb(255, 255, 255);
+  background: var(--color-bg);
+  color: var(--color-text);
   font-size: 12px;
 }
 
@@ -100,6 +103,8 @@ body {
   left:  calc(var(--width-type) + var(--width-tool));
   padding-top: var(--standard-distance);
 
+  z-index: 10;
+
   overflow: auto;
 }
 
@@ -125,6 +130,10 @@ body {
 
   display: flex;
   justify-content: space-between;
+
+  position: sticky;
+  top: 0;
+  background: var(--color-bg);
 }
 
 .detail_title_operate {
@@ -144,13 +153,24 @@ body {
 .detail_item {
   margin-bottom: var(--standard-distance);
 }
+
+.detail_content {
+  background: rgb(40, 40, 40);
+}
+
 .detail_item_content {
+
   margin-top: 10px;
-  background: var(--color-border);
-  padding: var(--standard-distance);
+  background: var(--color-bg);
+  border:1px solid var(--color-border);
+  /*padding: var(--standard-distance);*/
+  /*padding-left: 40px;*/
   overflow: auto;
 }
 
+.detail_item_content > pre {
+  padding: var(--standard-distance);
+}
 .list_button_plus {
   text-align: center;
   background: var(--color-border);
