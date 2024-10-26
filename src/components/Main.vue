@@ -44,20 +44,24 @@
     </div>
 
     <div :class="['list_container', isToggle ? 'type_gone':'']">
-      <div class="list_container_top">
-        <div class="list_button_toggle" @click="handleToggle">
-          <i
-              :class="['ri-xl', isToggle ? 'ri-menu-fold-2-line ':'ri-menu-unfold-2-line ']"
-          />
+      <div class="list_top_group">
+        <div class="list_container_top">
+          <div class="list_button_toggle" @click="handleToggle">
+            <i
+                :class="['ri-xl', isToggle ? 'ri-menu-fold-2-line ':'ri-menu-unfold-2-line ']"
+            />
+          </div>
+          <div class="list_top_text">
+            {{ topShowData.name }}
+          </div>
         </div>
-        <div class="list_top_text">
-          {{ topShowData.name }}
+        <div class="list_button_plus standard_button" @click="openAddNewGistDialog" v-if="!(topShowData.type === 'type' && topShowData.name === 'Starred')">
+          <i class="ri-add-line ri-xl"></i>
+          NEW SNIPPET
         </div>
       </div>
-      <div class="list_button_plus standard_button" @click="openAddNewGistDialog">
-        <i class="ri-add-line ri-xl"></i>
-        NEW SNIPPET
-      </div>
+
+
       <div v-for="item in showGistData"
            :class="['list_button standard_button', currentClickItem.id === item.id ? 'active' : '']"
            @click="handleClickLeftItem(item)">

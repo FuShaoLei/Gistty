@@ -76,6 +76,7 @@ body {
   position: fixed;
   top: 0;
   left: var(--width-tool);
+  z-index: 20;
 }
 
 .type_button {
@@ -104,7 +105,7 @@ body {
   position: fixed;
   top: 0;
   left:  calc(var(--width-type) + var(--width-tool));
-  padding-top: var(--standard-distance);
+  margin-bottom: var(--standard-distance);
 
   z-index: 10;
 
@@ -312,4 +313,12 @@ body {
 
 .type_gone {
   --width-type: 0px;
+}
+
+.list_top_group {
+  position: sticky;
+  top: 0;
+  background: var(--color-bg);
+  padding-top: var(--standard-distance);
+  padding-bottom: 5px;
 }
