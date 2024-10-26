@@ -35,10 +35,15 @@
       <div class="tag_container">
         <div class="tag_line"></div>
         <div
-            :class="['tag_button standard_button', (topShowData.type === 'tag' && topShowData.name === key) ? 'active' : '']"
-             v-for="key in tagMap.keys()" @click="handleClickTag(key)">
-          <i class="ri-hashtag"></i>
-          {{ key }}
+            :class="['tag_button standard_button', (topShowData.type === 'tag' && topShowData.name === value[0]) ? 'active' : '']"
+             v-for="(value, key) in tagMap" @click="handleClickTag(value[0])" :key="key">
+          <div>
+            <i class="ri-hashtag"></i>
+            {{value[0]}}
+          </div>
+          <div>
+            {{value[1].size}}
+          </div>
         </div>
       </div>
     </div>
@@ -57,7 +62,7 @@
         </div>
         <div class="list_button_plus standard_button" @click="openAddNewGistDialog" v-if="!(topShowData.type === 'type' && topShowData.name === 'Starred')">
           <i class="ri-add-line ri-xl"></i>
-          NEW SNIPPET
+          NEW
         </div>
       </div>
 

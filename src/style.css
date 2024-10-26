@@ -302,6 +302,12 @@ body {
   border-radius: 5px;
 }
 
+.tag_button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .type_button.active{
   background: var(--color-border);
   border-radius: 5px;
