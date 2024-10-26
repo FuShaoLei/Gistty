@@ -89,6 +89,9 @@
     height: 100%;
     padding: 3px 15px;
 }
-.filename_close_btn:hover {
 
+.preview_btn {
+    cursor: pointer;
+    height: 100%;
+    padding: 3px 15px;
 }

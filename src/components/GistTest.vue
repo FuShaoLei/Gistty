@@ -430,6 +430,5 @@ init()
 
 <style>
 @import url('src/style.css');
-@import url('src/Markdown.css');
 
 </style>
