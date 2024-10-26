@@ -14,7 +14,7 @@
           </div>
           <div class="filename_close_btn text-hover" v-if="currentEditData.files.length > 1" @click="removeFile(index)"><i class="ri-close-line ri-xl"></i></div>
         </div>
-        <div class="edit_item_content" v-if="(currentEditData.files[index].filename !== null && currentEditData.files[index].filename.endsWith('.md') && !isMarkDownPreview)">
+        <div class="edit_item_content" v-if="(currentEditData.files[index].filename !== null && (!currentEditData.files[index].filename.endsWith('.md') || currentEditData.files[index].filename.endsWith('.md') && !isMarkDownPreview))">
           <textarea ref="mContentRef" id="message" name="message" rows="20" cols="50" placeholder="input here " class="custom_textarea"
                     v-model="currentEditData.files[index].content"></textarea>
         </div>
