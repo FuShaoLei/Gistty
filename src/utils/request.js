@@ -1,7 +1,10 @@
 import axios from 'axios'
-const service = axios.create({
+export const request = axios.create({
     baseURL: process.env.NODE_ENV === 'production'?'https://api.github.com/':'/api',
     timeout: 10000 // 超时时间
 })
 
-export default service
+export const requestWithNoBaseUrl = axios.create({
+    timeout: 10000 // 超时时间
+})
+
