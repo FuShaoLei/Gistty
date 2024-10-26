@@ -259,3 +259,11 @@ body {
   background: var(--color-border);
   border-radius: 5px;
 }
+
+.type_container.type_gone {
+  display: none;
+}
+
+.type_gone {
+  --width-type: 0px;
+}

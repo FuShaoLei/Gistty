@@ -1,15 +1,14 @@
 import { request, requestWithNoBaseUrl } from "../utils/request.js";
 import {useSettingsStore} from "../stores/settingsData.js";
 
-
-export function getContents() {
+export function getGist() {
     const mSettingsStore = useSettingsStore();
 
     return request({
-        url:`/repos/${mSettingsStore.githubSettings.name}/${mSettingsStore.githubSettings.repo}/contents/`,
+        url:'/gists',
         headers:{
             "Accept":`application/vnd.github+json`,
-            "Authorization":`Bearer ${mSettingsStore.githubSettings.token}`,
+            "Authorization":`Bearer ${mSettingsStore.loginData.token}`,
             "X-GitHub-Api-Version": `2022-11-28`,
             "Cache-Control": "no-cache",
         },
@@ -17,26 +16,11 @@ export function getContents() {
     })
 }
 
-export function upload(name, data) {
+export function getStarGist() {
     const mSettingsStore = useSettingsStore();
 
     return request({
-        url:`/repos/${mSettingsStore.githubSettings.name}/${mSettingsStore.githubSettings.repo}/contents/`+name,
-        headers:{
-            "Accept":`application/vnd.github+json`,
-            "Authorization":`Bearer ${mSettingsStore.githubSettings.token}`,
-            "X-GitHub-Api-Version": `2022-11-28`
-        },
-        method:'put',
-        data: data
-    })
-}
-
-export function getGist() {
-    const mSettingsStore = useSettingsStore();
-
-    return request({
-        url:'/gists',
+        url:'/gists/starred',
         headers:{
             "Accept":`application/vnd.github+json`,
             "Authorization":`Bearer ${mSettingsStore.loginData.token}`,

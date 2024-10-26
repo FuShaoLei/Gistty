@@ -17,7 +17,7 @@
         <i class="ri-logout-circle-line ri-2x"></i>
       </div>
     </div>
-    <div class="type_container">
+    <div :class="['type_container', isToggle ? 'type_gone':'']">
       <div
           :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Mine') ? 'active' : '']"
           @click="handleClickType('Mine')"
@@ -41,10 +41,12 @@
       </div>
     </div>
 
-    <div class="list_container">
+    <div :class="['list_container', isToggle ? 'type_gone':'']">
       <div class="list_container_top">
-        <div class="list_button_toggle">
-          <i class="ri-menu-unfold-2-line ri-xl"></i>
+        <div class="list_button_toggle" @click="handleToggle">
+          <i
+              :class="['ri-xl', isToggle ? 'ri-menu-fold-2-line ':'ri-menu-unfold-2-line ']"
+          />
         </div>
         <div class="list_top_text">
           {{ topShowData.name }}
@@ -60,15 +62,15 @@
       </div>
     </div>
 
-    <div class="detail_container" v-if="currentClickItem.id !== undefined">
+    <div :class="['detail_container', isToggle ? 'type_gone':'']" v-show="currentClickItem.id !== undefined">
       <div class="detail_title_container">
         <div class="detail_title">
           {{currentClickItem.description}}
         </div>
 
         <div class="detail_title_operate">
-          <div class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
-          <div class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>
+          <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
+          <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>
         </div>
       </div>
       <div class="detail_content">
@@ -111,7 +113,7 @@
 
 </template>
 <script setup="GistTest">
-import {CreateGist, DeleteGist, getGist, getRaw, UpdateGist} from "../api/GithubApi.js";
+import {CreateGist, DeleteGist, getGist, getRaw, getStarGist, UpdateGist} from "../api/GithubApi.js";
 import {getCurrentInstance, ref} from "vue";
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
 import LoginDialog from "./LoginDialog.vue";
@@ -141,6 +143,24 @@ const handleTagData = (arr, id) => {
     }
   })
 }
+
+const getStarGistArr = async () => {
+  try {
+    const res = await getStarGist();
+    const newAllStarData = res.data;
+
+    allStarGistData.value = [...newAllStarData]
+    showGistData.value = [...allStarGistData.value]
+
+    if (currentClickItem.value.id !== undefined) {
+      currentClickItem.value = allGistData.value.find(ele => ele.id === currentClickItem.value.id)
+    }
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
 
 
 
@@ -369,13 +389,30 @@ const handleClickTag = (key) => {
 const handleClickType = (key) => {
   topShowData.value = {type: "type", name: key}
   if (key === 'Star') {
+
+    showGistData.value = []
+
     // TODO 请求Star的数据
+    if (allStarGistData.value.length === 0) {
+      getStarGistArr()
+    } else {
+      showGistData.value = [...allStarGistData.value]
+    }
+
+    currentClickItem.value = {}
+
   } else if (key === 'Mine') {
     // TODO 请求我的自己全部gist数据
 
     // TODO 这里应该重新请求一次，为了好看先用原来的数据
     showGistData.value = [...allGistData.value]
   }
+}
+
+const isToggle = ref(false)
+
+const handleToggle = () => {
+   isToggle.value = !isToggle.value
 }
 
 init()
