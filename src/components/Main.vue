@@ -19,18 +19,18 @@
     </div>
     <div :class="['type_container', isToggle ? 'type_gone':'']">
       <div
-          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Mine') ? 'active' : '']"
-          @click="handleClickType('Mine')"
+          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'All Snippets') ? 'active' : '']"
+          @click="handleClickType('All Snippets')"
       >
         <i class="ri-asterisk"></i>
-        Mine
+        All Snippets
       </div>
       <div
-          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Star') ? 'active' : '']"
-          @click="handleClickType('Star')"
+          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Starred') ? 'active' : '']"
+          @click="handleClickType('Starred')"
       >
         <i class="ri-star-line"></i>
-        Star
+        Starred
       </div>
       <div class="tag_container">
         <div class="tag_line"></div>
@@ -388,7 +388,7 @@ const handleDeleteGist = () => {
 }
 
 
-const topShowData = ref({type: "type", name: "Mine"}) // default display Mine Gist
+const topShowData = ref({type: "type", name: "All Snippets"}) // default display All Snippets Gist
 
 const handleClickTag = (key) => {
   console.log("handleClickTag", key)
@@ -405,7 +405,7 @@ const handleClickTag = (key) => {
 
 const handleClickType = (key) => {
   topShowData.value = {type: "type", name: key}
-  if (key === 'Star') {
+  if (key === 'Starred') {
 
     showGistData.value = []
 
@@ -418,7 +418,7 @@ const handleClickType = (key) => {
 
     currentClickItem.value = {}
 
-  } else if (key === 'Mine') {
+  } else if (key === 'All Snippets') {
     // TODO 请求我的自己全部gist数据
 
     // TODO 这里应该重新请求一次，为了好看先用原来的数据

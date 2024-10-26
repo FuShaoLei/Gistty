@@ -199,12 +199,12 @@ body {
 }
 .list_button_plus {
   text-align: center;
-  background: var(--color-border);
+  background: var(--color-theme);
   border-radius: 5px;
 }
 
 .list_button_plus:hover {
-  background: rgb(72, 72, 72);
+  background: var(--color-theme-2);
 }
 
 .list_button_plus:active {
