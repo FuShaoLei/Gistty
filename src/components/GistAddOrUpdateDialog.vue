@@ -8,11 +8,18 @@
       <div class="edit_item" v-for="(item, index) in currentEditData.files" :key="index">
         <div class="edit_item_filename">
           <input type="text" placeholder="Filename including extension" class="custom_input" v-model="currentEditData.files[index].filename"/>
+          <div v-if="(currentEditData.files[index].filename !== null && currentEditData.files[index].filename.endsWith('.md'))"
+               class="preview_btn text-hover" @click="handleClickPreview">
+            <i :class="['ri-xl', isMarkDownPreview ? 'ri-eye-off-line':'ri-eye-line']"></i>
+          </div>
           <div class="filename_close_btn text-hover" v-if="currentEditData.files.length > 1" @click="removeFile(index)"><i class="ri-close-line ri-xl"></i></div>
         </div>
-        <div class="edit_item_content">
-          <textarea ref="contentRef" id="message" name="message" rows="20" cols="50" placeholder="input here " class="custom_textarea"
+        <div class="edit_item_content" v-if="(currentEditData.files[index].filename !== null && currentEditData.files[index].filename.endsWith('.md') && !isMarkDownPreview)">
+          <textarea ref="mContentRef" id="message" name="message" rows="20" cols="50" placeholder="input here " class="custom_textarea"
                     v-model="currentEditData.files[index].content"></textarea>
+        </div>
+        <div class="markdown-body" v-if="(isMarkDownPreview && currentEditData.files[index].content !== null)"
+             v-html="marked.parse(currentEditData.files[index].content)">
         </div>
       </div>
 
@@ -40,6 +47,8 @@
 
 <script setup="GistAddOrUpdateDialog">
 import {ref} from "vue";
+import { marked } from 'marked';
+
 const props = defineProps({
   showDialog: {
     type: Boolean,
@@ -47,6 +56,9 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['close', 'confirm'])
+
+
+const isMarkDownPreview = ref(false)
 
 const closeDialog = () => emit('close')
 
@@ -96,7 +108,7 @@ const removeFile = (removeIndex) => {
   })
 }
 
-const contentRef = ref([])
+const mContentRef = ref([])
 
 const init = (data = undefined) => {
   if (data === undefined) {
@@ -114,7 +126,12 @@ const init = (data = undefined) => {
 
     currentEditData.value.description = formattedDate;
     currentEditData.value.files = [{content: "",  filename: "README.md"}]
-    contentRef.value[0].focus();
+
+    setTimeout(()=>{
+      mContentRef.value[0].focus();
+    }, 200)
+
+
   } else {
     currentEditData.value = Object.assign({}, {
       gist_id: data.id,
@@ -125,6 +142,10 @@ const init = (data = undefined) => {
       }))
     })
   }
+}
+
+const handleClickPreview  = () => {
+  isMarkDownPreview.value = !isMarkDownPreview.value
 }
 
 defineExpose({init})
