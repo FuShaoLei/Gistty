@@ -22,12 +22,14 @@
           :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Mine') ? 'active' : '']"
           @click="handleClickType('Mine')"
       >
+        <i class="ri-asterisk"></i>
         Mine
       </div>
       <div
           :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Star') ? 'active' : '']"
           @click="handleClickType('Star')"
       >
+        <i class="ri-star-line"></i>
         Star
       </div>
       <div class="tag_container">
@@ -54,6 +56,7 @@
       </div>
       <div class="list_button_plus standard_button" @click="openAddNewGistDialog">
         <i class="ri-add-line ri-xl"></i>
+        NEW SNIPPET
       </div>
       <div v-for="item in showGistData"
            :class="['list_button standard_button', currentClickItem.id === item.id ? 'active' : '']"
@@ -75,7 +78,14 @@
       </div>
       <div class="detail_content">
         <div v-for="file in currentClickItem.files" class="detail_item">
-          <div class="detail_item_file"> {{ file.filename }} </div>
+          <div class="detail_item_file">
+            <div>
+              {{ file.filename }}
+            </div>
+             <div class="detail_item_operate">
+               <div class="text-hover" @click="handleClickCopy(file.rawContent)"><i class="ri-file-copy-line ri-xl"></i></div>
+             </div>
+          </div>
           <div class="detail_item_content"><pre v-if="file.language !== 'Markdown'">{{ file.rawContent}}</pre>
             <div class="markdown-body" v-else-if="file.rawContent !==undefined " v-html="marked.parse(file.rawContent)">
             </div>
@@ -128,9 +138,9 @@ import { marked } from 'marked';
 const detailContainerRef = ref(null)
 const gistAddOrUpdateDialogRef = ref(null)
 
-const allGistData = ref([]) // 我的全部数据
+const allGistData = ref([])
 const allStarGistData = ref([])
-const showGistData = ref([]) // 实际展示的数据
+const showGistData = ref([])
 
 
 const tagMap = ref(new Map())
@@ -420,6 +430,11 @@ const isToggle = ref(false)
 
 const handleToggle = () => {
    isToggle.value = !isToggle.value
+}
+
+const handleClickCopy = (text) => {
+  navigator.clipboard.writeText(text)
+  // TODO 提示复制成功
 }
 
 init()
