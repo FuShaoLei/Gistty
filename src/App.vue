@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import GistTest from "./components/GistTest.vue";
+import Main from "./components/Main.vue";
 </script>
 
 <template>
-  <GistTest/>
+  <Main/>
 </template>
