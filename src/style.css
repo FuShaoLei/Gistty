@@ -20,7 +20,7 @@
   --color-text: rgb(255, 255, 255);
   --color-bg: rgb(26, 26, 26);
 
-  --font-size-normal: 13px;
+  --font-size-normal: 14px;
 
   --width-tool: 50px;
   --width-type: 200px;
@@ -62,7 +62,7 @@ body {
 }
 .tool_button {
   cursor: pointer;
-  margin-bottom: var(--standard-distance);
+  margin-bottom: 18px;
 }
 .tool_button:hover {
   color: var(--color-theme);

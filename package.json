@@ -1,5 +1,5 @@
 {
-  "name": "electron-vue-vite",
+  "name": "gistty",
   "version": "0.0.1-beta",
   "main": "dist-electron/main/index.js",
   "description": "Github Upload Tool.",

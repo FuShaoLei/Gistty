@@ -136,7 +136,7 @@
 </template>
 <script setup="GistTest">
 import {CreateGist, DeleteGist, getGist, getRaw, getStarGist, UpdateGist} from "../api/GithubApi.js";
-import {getCurrentInstance, ref} from "vue";
+import {getCurrentInstance, provide, ref} from "vue";
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
 import LoginDialog from "./LoginDialog.vue";
 import {useSettingsStore} from "../stores/settingsData.js";
@@ -167,6 +167,8 @@ const handleTagData = (arr, id) => {
     }
   })
 }
+
+provide('tagMap', tagMap.value)
 
 const getStarGistArr = async () => {
   try {

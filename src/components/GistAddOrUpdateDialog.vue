@@ -2,9 +2,56 @@
   <div class="custom_dialog_wrapper">
     <div class="edit_container">
       <div class="edit_title">
-        <input type="text" placeholder="Gist description" class="custom_input" v-model="currentEditData.description"/>
+        <div class="edit_title_label">DESCRIPTION</div>
+        <div class="edit_title_input">
+          <input type="text" placeholder="Gist description" class="custom_input " v-model="currentEditData.description"/>
+        </div>
       </div>
 
+      <div class="edit_tags_container">
+        <div class="edit_tags_groups_label">TAGS</div>
+        <div class="edit_tags_groups">
+          <div class="edit_tags_item">
+            <div class="edit_tags_item_label">life</div>
+            <div class="edit_tags_item_btn text-hover"><i class="ri-close-line"></i></div>
+          </div>
+          <div class="edit_tags_plus text-hover" @click="handleClickManageTags" ref="manageTagsBtnRef">
+            <i class="ri-add-line"></i>
+            manage tags
+          </div>
+        </div>
+      </div>
+
+      <div class="manage_tags_popup_container" ref="manageTagsPopupContainerRef">
+        <div class="manage_tags_search_container">
+          <input type="text" placeholder="Search Tag" class="custom_input " v-model="tagSearchText"/>
+        </div>
+        <div class="manage_tags_group">
+          <div :class="['manage_tags_item', selectTag.has(value[0]) ? 'active': '']"
+               v-for="value in manageTagMap" @click="handleClickSelectTag(value[0])">
+            <div>
+              <i class="ri-hashtag"></i>
+              {{value[0]}}
+            </div>
+              <div v-if="selectTag.has(value[0])">
+                <i class="ri-check-line"></i>
+              </div>
+          </div>
+          <div class="manage_tags_item" v-if="isCanPlusTags" @click="handleClickPlusNewTag(tagSearchText)">
+            <div>
+              <i class="ri-add-line"></i>
+              Create Tag {{`"${tagSearchText}"`}}
+            </div>
+          </div>
+        </div>
+        <div class="manage_tags_operate_container">
+          <div>Cancel</div>
+          <div>Confirm</div>
+        </div>
+
+      </div>
+
+      <div class="files_group_label">FILES</div>
       <div class="edit_item" v-for="(item, index) in currentEditData.files" :key="index">
         <div class="edit_item_filename">
           <input type="text" placeholder="Filename including extension" class="custom_input" v-model="currentEditData.files[index].filename"/>
@@ -46,8 +93,11 @@
 </template>
 
 <script setup="GistAddOrUpdateDialog">
-import {ref} from "vue";
+import {computed, inject, ref} from "vue";
 import { marked } from 'marked';
+
+const tagMap = inject('tagMap', undefined)
+
 
 const props = defineProps({
   showDialog: {
@@ -57,6 +107,39 @@ const props = defineProps({
 })
 const emit = defineEmits(['close', 'confirm'])
 
+const manageTagsBtnRef = ref(null)
+const manageTagsPopupContainerRef = ref(null)
+
+const isCanPlusTags = ref(false)
+
+const tagSearchText = ref("")
+
+const manageTagMap = computed(() => {
+  if (tagMap !== undefined && tagSearchText.value.length > 0) {
+    let returnTag = [...tagMap]
+
+    // tagMap.forEach((val, key)=>{
+    //   if (key.includes(tagSearchText.value)) {
+    //     returnTag.set(key, val)
+    //   }
+    // })
+
+    returnTag = returnTag.filter(value => value[0].includes(tagSearchText.value))
+
+    // 如果搜索的标签不在里面，那么就有一个是否新增标签
+    if(returnTag.length === 0 || returnTag.filter(value => value[0] === tagSearchText.value).length === 0) {
+      isCanPlusTags.value = true
+      // returnTag.push([`Create Tag "${tagSearchText.value}"`, []])
+    } else {
+      isCanPlusTags.value = false
+    }
+
+    return returnTag
+  } else {
+    isCanPlusTags.value = false
+    return [...tagMap]
+  }
+})
 
 const isMarkDownPreview = ref(false)
 
@@ -146,6 +229,58 @@ const init = (data = undefined) => {
 
 const handleClickPreview  = () => {
   isMarkDownPreview.value = !isMarkDownPreview.value
+}
+
+const handleClickManageTags = () => {
+  const rect = manageTagsBtnRef.value.getBoundingClientRect();
+  console.log(rect)
+  manageTagsPopupContainerRef.value.style.top = rect.top + window.scrollY + "px"
+  manageTagsPopupContainerRef.value.style.left = rect.right + window.scrollX + 5 + "px"
+  manageTagsPopupContainerRef.value.style.display = "block"
+}
+
+const initText = () => {
+  // let returnTag = new Map()
+  //
+  // console.log("tagMap")
+  // console.log(tagMap)
+  //
+  // console.log("returnTag")
+  // console.log(returnTag)
+  //
+  // tagMap.forEach((val, key)=>{
+  //   console.log(`${key}: ${val}`)
+  //
+  //   if (key.includes("c")) {
+  //     returnTag.set(key, val)
+  //   }
+  // })
+
+  const arr = [...tagMap]
+  console.log("arr", arr)
+}
+
+
+
+// initText()
+
+const selectTag = ref(new Set())
+
+const handleClickSelectTag = (tag) => {
+
+  if (selectTag.value.has(tag)) {
+    selectTag.value.delete(tag)
+  } else  {
+    selectTag.value.add(tag)
+  }
+
+  tagSearchText.value = ""
+
+}
+
+const handleClickPlusNewTag = (newTag) => {
+
+
 }
 
 defineExpose({init})
