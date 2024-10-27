@@ -159,6 +159,11 @@ body {
   border-radius: 200px;
   padding: 3px 8px;
 }
+
+.detail_info_tag_group div i{
+  color: var(--color-theme);
+}
+
 .detail_info_tag_group div:hover {
   border: 1px solid var(--color-theme);
   color: var(--color-theme);

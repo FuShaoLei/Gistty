@@ -86,8 +86,8 @@
           </div>
         </div>
 
-        <div class="detail_title_info_group">
-          <div class="detail_info_tag_group" v-if="currentClickItem.showTags !== undefined && currentClickItem.showTags.length > 0">
+        <div class="detail_title_info_group" v-if="currentClickItem.showTags !== undefined && currentClickItem.showTags.length > 0">
+          <div class="detail_info_tag_group" >
             <div v-for="tag in currentClickItem.showTags" @click="handleClickTag(tag)">
               <i class="ri-hashtag"></i>
               {{tag}}
@@ -208,21 +208,21 @@ const getGistArr = async () => {
     const res = await getGist();
     const newAllData = res.data;
 
-    // const updatedDataPromises = allData.map(async (item) => {
-    //   const filePromises = Object.values(item.files).map(async (objValue) => {
-    //     const rawContent = await getContent(objValue.raw_url);
-    //     return Object.assign(objValue, {rawContent});
-    //   });
-    //
-    //   // 等待所有文件的内容都获取完
-    //   await Promise.all(filePromises);
-    //   return item;
-    // });
-    //
-    // // 等待所有数据的更新操作完成
-    // const updatedData = await Promise.all(updatedDataPromises);
+    const updatedDataPromises = newAllData.map(async (item) => {
+      const filePromises = Object.values(item.files).map(async (objValue) => {
+        const rawContent = await getContent(objValue.raw_url);
+        return Object.assign(objValue, {rawContent});
+      });
 
-    newAllData.forEach(ele => {
+      // 等待所有文件的内容都获取完
+      await Promise.all(filePromises);
+      return item;
+    });
+
+    // 等待所有数据的更新操作完成
+    const latestData = await Promise.all(updatedDataPromises);
+
+    latestData.forEach(ele => {
       // 处理description和tag
       ele.showDescription = removeTags(ele.description)
 
@@ -281,10 +281,12 @@ const handleClickLeftItem = async (data) => {
   console.log("handleClickLeftItem")
   console.log(data)
   currentClickItem.value = data
-  currentClickItem.value = await handleGetRawContentData(data)
+
+  if (data.rawContent === undefined) {
+    currentClickItem.value = await handleGetRawContentData(data)
+  }
 
   detailContainerRef.value.scrollIntoView({ block: 'start' });
-
 }
 
 const isOpenAddOrUpdateDialog = ref(false)
