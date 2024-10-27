@@ -237,7 +237,14 @@ const getGistArr = async () => {
 
     allGistData.value = [...newAllData]
     // TODO 可能要处理一些东西
-    showGistData.value = [...allGistData.value]
+
+    if (topShowData.value.type === 'tag') {
+      handleClickTag(topShowData.value.name)
+    } else {
+      showGistData.value = [...allGistData.value]
+    }
+
+
 
     if (currentClickItem.value.id !== undefined) {
       currentClickItem.value = allGistData.value.find(ele => ele.id === currentClickItem.value.id)

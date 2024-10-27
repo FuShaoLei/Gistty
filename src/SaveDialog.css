@@ -25,8 +25,9 @@
 
 .edit_title_label,.files_group_label,.edit_tags_groups_label {
     font-weight: bolder;
+    color: var(--color-info);
     /*font-size: 1rem;*/
-    color: var(--color-theme);
+    /*color: var(--color-theme);*/
 }
 
 .custom_input {
@@ -199,7 +200,7 @@
 }
 
 .manage_tags_operate_container {
-    margin-top: 6px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     /* 平分空间 */
@@ -210,7 +211,7 @@
     /* 每个 div 占据相同的宽度 */
     text-align: center;
     padding: 4px 2px;
-    background: rgb(52, 52, 52);
+    /*background: rgb(52, 52, 52);*/
     border-radius: 5px;
     cursor: pointer;
 }
@@ -221,4 +222,19 @@
 
 .manage_tags_operate_container div:last-child{
     margin-left: 5px;
+}
+
+.manage_tags_operate_cancel {
+    background: rgb(52, 52, 52);
+}
+.manage_tags_operate_cancel:hover {
+    background: rgb(42, 42, 42);
+}
+
+.manage_tags_operate_confirm {
+    background: var(--color-theme);
+}
+
+.manage_tags_operate_confirm:hover {
+    background: var(--color-theme-2);
 }

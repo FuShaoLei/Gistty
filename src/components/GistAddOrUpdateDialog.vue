@@ -48,8 +48,8 @@
           </div>
         </div>
         <div class="manage_tags_operate_container">
-          <div @click="handleClickManageTagCancelBtn">Cancel</div>
-          <div @click="handleClickManageTagConfirmBtn">Confirm</div>
+          <div @click="handleClickManageTagCancelBtn" class="manage_tags_operate_cancel">Cancel</div>
+          <div @click="handleClickManageTagConfirmBtn" class="manage_tags_operate_confirm">Confirm</div>
         </div>
 
       </div>
