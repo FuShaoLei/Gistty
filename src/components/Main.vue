@@ -70,20 +70,31 @@
       <div v-for="item in showGistData"
            :class="['list_button standard_button', currentClickItem.id === item.id ? 'active' : '']"
            @click="handleClickLeftItem(item)">
-        {{ item.description }}
+        {{ item.showDescription === undefined ? item.description : item.showDescription}}
       </div>
     </div>
 
     <div :class="['detail_container', isToggle ? 'type_gone':'']" v-show="currentClickItem.id !== undefined" ref="detailContainerRef">
       <div class="detail_title_container">
-        <div class="detail_title">
-          {{currentClickItem.description}}
+        <div class="detail_title_description_group">
+          <div class="detail_title">
+            {{ currentClickItem.showDescription === undefined ? currentClickItem.description : currentClickItem.showDescription}}
+          </div>
+          <div class="detail_title_operate">
+            <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
+            <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>
+          </div>
         </div>
 
-        <div class="detail_title_operate">
-          <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
-          <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>
+        <div class="detail_title_info_group">
+          <div class="detail_info_tag_group" v-if="currentClickItem.showTags !== undefined && currentClickItem.showTags.length > 0">
+            <div v-for="tag in currentClickItem.showTags" @click="handleClickTag(tag)">
+              <i class="ri-hashtag"></i>
+              {{tag}}
+            </div>
+          </div>
         </div>
+
       </div>
       <div class="detail_content">
         <div v-for="file in currentClickItem.files" class="detail_item">
@@ -143,7 +154,7 @@ import {useSettingsStore} from "../stores/settingsData.js";
 import SecondConfirmDialog from "./SecondConfirmDialog.vue";
 const { proxy } =  getCurrentInstance()
 import { marked } from 'marked';
-import {parseTag} from "../utils/GistUtils.js";
+import {parseTag, removeTags} from "../utils/GistUtils.js";
 
 const detailContainerRef = ref(null)
 const gistAddOrUpdateDialogRef = ref(null)
@@ -156,6 +167,9 @@ const showGistData = ref([])
 const tagMap = ref(new Map())
 
 const handleTagData = (arr, id) => {
+  if (arr === undefined || arr.length === 0) {
+    return
+  }
   arr.forEach((item) => {
     if (!tagMap.value.has(item)) {
       let newSet = new Set()
@@ -209,11 +223,15 @@ const getGistArr = async () => {
     // const updatedData = await Promise.all(updatedDataPromises);
 
     newAllData.forEach(ele => {
+      // 处理description和tag
+      ele.showDescription = removeTags(ele.description)
 
+      // 处理tag
       const tmpTags = parseTag(ele.description)
-      if (tmpTags !== undefined && tmpTags.length > 0) {
-        handleTagData(tmpTags, ele.id)
-      }
+      handleTagData(tmpTags, ele.id)
+
+      ele.showTags = tmpTags
+
 
     })
 
@@ -399,6 +417,11 @@ const topShowData = ref({type: "type", name: "All Snippets"}) // default display
 
 const handleClickTag = (key) => {
   console.log("handleClickTag", key)
+
+  if (topShowData.value.type === "tag" && topShowData.value.name === key) {
+    return
+  }
+
   topShowData.value = {type: "tag", name: key}
   // TODO 处理数据的展示
 

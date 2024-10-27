@@ -132,12 +132,36 @@ body {
   border-bottom: 1px solid var(--color-border);
   padding: var(--standard-distance);
 
-  display: flex;
-  justify-content: space-between;
+
 
   position: sticky;
   top: 0;
   background: var(--color-bg);
+}
+.detail_title_description_group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail_title_info_group {
+  margin-top: 10px;
+}
+.detail_info_tag_group {
+  display: flex;
+}
+.detail_info_tag_group div {
+  border: 1px solid var(--color-border);
+
+  margin-right: 5px;
+
+  cursor: pointer;
+
+  border-radius: 200px;
+  padding: 3px 8px;
+}
+.detail_info_tag_group div:hover {
+  border: 1px solid var(--color-theme);
+  color: var(--color-theme);
 }
 
 .detail_title_operate {
