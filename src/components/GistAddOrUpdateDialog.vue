@@ -98,6 +98,7 @@ import { marked } from 'marked';
 
 const tagMap = inject('tagMap', undefined)
 
+const tagMapArr = ref([])
 
 const props = defineProps({
   showDialog: {
@@ -115,14 +116,22 @@ const isCanPlusTags = ref(false)
 const tagSearchText = ref("")
 
 const manageTagMap = computed(() => {
-  if (tagMap !== undefined && tagSearchText.value.length > 0) {
-    let returnTag = [...tagMap]
+  if (tagMapArr.value !== undefined && tagSearchText.value.length > 0) {
+    let returnTag = [...tagMapArr.value]
 
     // tagMap.forEach((val, key)=>{
     //   if (key.includes(tagSearchText.value)) {
     //     returnTag.set(key, val)
     //   }
     // })
+
+    console.log("tagMapArr")
+    console.log(tagMapArr.value)
+
+    const fuck = [...tagMapArr.value]
+
+    console.log("fuck")
+    console.log(fuck)
 
     returnTag = returnTag.filter(value => value[0].includes(tagSearchText.value))
 
@@ -137,7 +146,7 @@ const manageTagMap = computed(() => {
     return returnTag
   } else {
     isCanPlusTags.value = false
-    return [...tagMap]
+    return [...tagMapArr.value]
   }
 })
 
@@ -214,6 +223,9 @@ const init = (data = undefined) => {
       mContentRef.value[0].focus();
     }, 200)
 
+    if (tagMap !== undefined) {
+      tagMapArr.value = [...tagMap]
+    }
 
   } else {
     currentEditData.value = Object.assign({}, {
@@ -280,6 +292,8 @@ const handleClickSelectTag = (tag) => {
 
 const handleClickPlusNewTag = (newTag) => {
 
+  tagMapArr.value.push([newTag, []])
+  handleClickSelectTag(newTag)
 
 }
 
