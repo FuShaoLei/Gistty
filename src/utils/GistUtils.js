@@ -11,3 +11,13 @@ export const parseTag = (text) => {
     }
 
 }
+
+export const removeTags = (text) => {
+    if (text !== undefined && text !== null) {
+        // 匹配所有的标签
+        const resultText = text.replace(/#([\w\u4e00-\u9fa5]+)/g, '');
+        // 返回去除标签后的文本
+        return resultText.trim();
+    }
+    return '';
+}

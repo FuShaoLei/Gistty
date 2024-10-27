@@ -11,13 +11,16 @@
       <div class="edit_tags_container">
         <div class="edit_tags_groups_label">TAGS</div>
         <div class="edit_tags_groups">
-          <div class="edit_tags_item">
-            <div class="edit_tags_item_label">life</div>
-            <div class="edit_tags_item_btn text-hover"><i class="ri-close-line"></i></div>
+          <div class="edit_tags_item" v-for="tag in currentEditTag">
+            <div class="edit_tags_item_label">
+              <i class="ri-hashtag"></i>
+              {{ tag }}
+            </div>
+            <div class="edit_tags_item_btn text-hover" @click="handleClickRemoveTag(tag)"><i class="ri-close-line"></i></div>
           </div>
           <div class="edit_tags_plus text-hover" @click="handleClickManageTags" ref="manageTagsBtnRef">
-            <i class="ri-add-line"></i>
-            manage tags
+            <i class="ri-list-check"></i>
+            Select Tags
           </div>
         </div>
       </div>
@@ -37,7 +40,7 @@
                 <i class="ri-check-line"></i>
               </div>
           </div>
-          <div class="manage_tags_item" v-if="isCanPlusTags" @click="handleClickPlusNewTag(tagSearchText)">
+          <div ref="manageTagsPlusItemRef" class="manage_tags_item" v-show="isCanPlusTags" @click="handleClickPlusNewTag(tagSearchText)">
             <div>
               <i class="ri-add-line"></i>
               Create Tag {{`"${tagSearchText}"`}}
@@ -45,8 +48,8 @@
           </div>
         </div>
         <div class="manage_tags_operate_container">
-          <div>Cancel</div>
-          <div>Confirm</div>
+          <div @click="handleClickManageTagCancelBtn">Cancel</div>
+          <div @click="handleClickManageTagConfirmBtn">Confirm</div>
         </div>
 
       </div>
@@ -93,8 +96,9 @@
 </template>
 
 <script setup="GistAddOrUpdateDialog">
-import {computed, inject, ref} from "vue";
+import {computed, inject, onMounted, onBeforeUnmount, ref, nextTick} from "vue";
 import { marked } from 'marked';
+import {parseTag, removeTags} from "../utils/GistUtils.js";
 
 const tagMap = inject('tagMap', undefined)
 
@@ -108,11 +112,13 @@ const props = defineProps({
 })
 const emit = defineEmits(['close', 'confirm'])
 
+
+const manageTagsPlusItemRef = ref(null)
 const manageTagsBtnRef = ref(null)
 const manageTagsPopupContainerRef = ref(null)
 
-const isCanPlusTags = ref(false)
 
+const isCanPlusTags = ref(false)
 const tagSearchText = ref("")
 
 const manageTagMap = computed(() => {
@@ -154,6 +160,7 @@ const isMarkDownPreview = ref(false)
 
 const closeDialog = () => emit('close')
 
+const currentEditTag = ref([])
 const currentEditData = ref({
   files: [
     {
@@ -174,9 +181,10 @@ const saveGist = () => {
     return acc;
   }, {});
 
-  console.log("requestFiles", requestFiles);
-
-  Object.assign(tmpData, {files: requestFiles})
+  Object.assign(tmpData, {
+    description: currentEditData.value.description + ' ' + currentEditTag.value.map(item =>  `#${item}`).join(' '),
+    files: requestFiles
+  })
 
   if (tmpData.gist_id === undefined) {
     Object.assign(tmpData, {public: false})
@@ -203,6 +211,12 @@ const removeFile = (removeIndex) => {
 const mContentRef = ref([])
 
 const init = (data = undefined) => {
+
+
+  if (tagMap !== undefined) {
+    tagMapArr.value = [...tagMap]
+  }
+
   if (data === undefined) {
     const now = new Date();
 
@@ -223,19 +237,18 @@ const init = (data = undefined) => {
       mContentRef.value[0].focus();
     }, 200)
 
-    if (tagMap !== undefined) {
-      tagMapArr.value = [...tagMap]
-    }
-
   } else {
     currentEditData.value = Object.assign({}, {
       gist_id: data.id,
-      description: data.description,
+      description: removeTags(data.description),
+      originDescription: data.description,
       files: Object.entries(data.files).map(([filename, fileData]) => ({
         filename,
         content: fileData.rawContent
       }))
     })
+
+    currentEditTag.value = [...parseTag(data.description)]
   }
 }
 
@@ -249,52 +262,74 @@ const handleClickManageTags = () => {
   manageTagsPopupContainerRef.value.style.top = rect.top + window.scrollY + "px"
   manageTagsPopupContainerRef.value.style.left = rect.right + window.scrollX + 5 + "px"
   manageTagsPopupContainerRef.value.style.display = "block"
+
+
+  // TODO 初始化selectTag
+  if (currentEditTag.value.length > 0) {
+    selectTag.value = new Set()
+    currentEditTag.value.forEach((tag) => {
+      selectTag.value.add(tag)
+    })
+  } else {
+    selectTag.value = new Set()
+  }
+
 }
-
-const initText = () => {
-  // let returnTag = new Map()
-  //
-  // console.log("tagMap")
-  // console.log(tagMap)
-  //
-  // console.log("returnTag")
-  // console.log(returnTag)
-  //
-  // tagMap.forEach((val, key)=>{
-  //   console.log(`${key}: ${val}`)
-  //
-  //   if (key.includes("c")) {
-  //     returnTag.set(key, val)
-  //   }
-  // })
-
-  const arr = [...tagMap]
-  console.log("arr", arr)
-}
-
-
-
-// initText()
 
 const selectTag = ref(new Set())
+
+
+const handleClickPlusNewTag = (newTag) => {
+  tagMapArr.value.push([newTag, []])
+  handleClickSelectTag(newTag)
+}
 
 const handleClickSelectTag = (tag) => {
 
   if (selectTag.value.has(tag)) {
     selectTag.value.delete(tag)
-  } else  {
+  } else {
     selectTag.value.add(tag)
   }
 
   tagSearchText.value = ""
-
 }
 
-const handleClickPlusNewTag = (newTag) => {
 
-  tagMapArr.value.push([newTag, []])
-  handleClickSelectTag(newTag)
+const handleClickManageTagCancelBtn = () => {
+  manageTagsPopupContainerRef.value.style.display = "none"
+}
 
+const handleClickManageTagConfirmBtn = () => {
+  currentEditTag.value = [...selectTag.value]
+  selectTag.value = new Set()
+  handleClickManageTagCancelBtn()
+}
+
+const handleClickOutside = async (event) => {
+  await nextTick();
+
+
+  if (manageTagsPopupContainerRef.value && !manageTagsPopupContainerRef.value.contains(event.target) && !manageTagsBtnRef.value.contains(event.target)) {
+    handleClickManageTagCancelBtn()
+  }
+};
+
+
+onMounted(async () => {
+  await nextTick(); // 确保 DOM 已完成更新
+  window.addEventListener("click", handleClickOutside);
+});
+
+
+onBeforeUnmount(async ()=>{
+  await nextTick(); // 确保 DOM 已完成更新
+  window.removeEventListener("click", handleClickOutside);
+})
+
+
+const handleClickRemoveTag = (removeTag) => {
+  currentEditTag.value = currentEditTag.value.filter(item=> item !== removeTag)
 }
 
 defineExpose({init})

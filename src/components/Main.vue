@@ -143,6 +143,7 @@ import {useSettingsStore} from "../stores/settingsData.js";
 import SecondConfirmDialog from "./SecondConfirmDialog.vue";
 const { proxy } =  getCurrentInstance()
 import { marked } from 'marked';
+import {parseTag} from "../utils/GistUtils.js";
 
 const detailContainerRef = ref(null)
 const gistAddOrUpdateDialogRef = ref(null)
@@ -188,8 +189,6 @@ const getStarGistArr = async () => {
 };
 
 
-
-
 const getGistArr = async () => {
   try {
     const res = await getGist();
@@ -210,15 +209,12 @@ const getGistArr = async () => {
     // const updatedData = await Promise.all(updatedDataPromises);
 
     newAllData.forEach(ele => {
-      if (ele.description !== undefined && ele.description !== null) {
-        const matchData = ele.description.match(/#([\w\u4e00-\u9fa5]+)/g);
-        if(matchData !== null) {
-          let tags = matchData.map(tag => tag.slice(1));
-          if (tags.length > 0) {
-            handleTagData(tags, ele.id)
-          }
-        }
+
+      const tmpTags = parseTag(ele.description)
+      if (tmpTags !== undefined && tmpTags.length > 0) {
+        handleTagData(tmpTags, ele.id)
       }
+
     })
 
     allGistData.value = [...newAllData]
