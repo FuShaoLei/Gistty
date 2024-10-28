@@ -63,7 +63,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 .tool_button {
   cursor: pointer;

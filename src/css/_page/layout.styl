@@ -1,0 +1,41 @@
+
+*
+  margin 0
+  padding 0
+
+body
+  background var(--color-bg)
+  color var(--color-text)
+  font-size font-size-normal
+
+
+.tool_container
+  height 100vh;
+  width width-tool
+  background var(--color-bg-tool)
+  position fixed;
+  top 0
+
+.type_container
+  border-right border-style
+  width width-type
+  height 100vh
+  padding-top standard-distance
+  position fixed
+  top 0
+  left width-tool
+  z-index 20
+
+
+.list_container
+  width width-list
+  border-right border-style
+  height 100vh
+  position fixed
+  top 0
+  left width-type + width-tool
+  z-index 10
+  overflow auto
+
+.detail_container
+  margin-left width-type + width-list + width-tool

@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import './css/style.styl'
 import 'remixicon/fonts/remixicon.css'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -14,8 +13,6 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App)
 
-
-app.use(ElementPlus)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

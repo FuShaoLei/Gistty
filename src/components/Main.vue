@@ -19,14 +19,14 @@
     </div>
     <div :class="['type_container', isToggle ? 'type_gone':'']">
       <div
-          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'All Snippets') ? 'active' : '']"
+          :class="['type_button standard_button', (topShowData.type === 'type' && topShowData.name === 'All Snippets') ? 'active' : '']"
           @click="handleClickType('All Snippets')"
       >
         <i class="ri-asterisk"></i>
         All Snippets
       </div>
       <div
-          :class="['type_button', (topShowData.type === 'type' && topShowData.name === 'Starred') ? 'active' : '']"
+          :class="['type_button standard_button', (topShowData.type === 'type' && topShowData.name === 'Starred') ? 'active' : '']"
           @click="handleClickType('Starred')"
       >
         <i class="ri-star-line"></i>
@@ -480,9 +480,3 @@ init()
 
 
 </script>
-
-
-<style>
-@import url('src/style.css');
-
-</style>
