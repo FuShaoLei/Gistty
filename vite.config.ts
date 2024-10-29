@@ -73,10 +73,10 @@ export default defineConfig(({ command }) => {
         server: {
             proxy: {
                 '/api': {
-                    target: 'https://api.github.com/',  //你要跨域访问的网址
+                    target: 'https://api.github.com/',
                     secure: false,
-                    changeOrigin: true,   // 允许跨域
-                    rewrite: (path) => path.replace(/^\/api/, '') // 重写路径把路径变成空字符
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/api/, '')
                 }
             }
         },
