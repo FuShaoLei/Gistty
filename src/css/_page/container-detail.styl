@@ -1,8 +1,48 @@
+.detail_container
+  background var(--color-hover)
+  min-height 100vh
+
 .detail_title_description_group
   flex-between-center()
   .detail_title_operate
     flex-center()
 
 
-.detail_item_file
+.detail_title_container
+  border-bottom border-style
+  background var(--color-bg)
+  padding spacing-small
+  stick-top()
+
+
+.detail_title_operate
+  div
+    padding-left spacing-small
+    margin-left spacing-mini
+    cursor-text()
+    text-hover-active()
+
+.detail_title_info_group
+  margin-top spacing-mini
+  .detail_info_tag_group
+    flex-center()
+    div
+      tag-normal-style()
+
+
+.detail_item
+  background var(--color-bg)
+  margin spacing-small
+
+
+.detail_item_filename_wrapper
   flex-between-center()
+  padding spacing-small
+  border-bottom border-style
+  .detail_item_operate
+    div
+      text-hover-active()
+      cursor-text()
+
+.detail_item_content
+  padding spacing-small

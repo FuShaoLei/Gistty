@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="list_button_plus" @click="openAddNewGistDialog" v-if="!(topShowData.type === 'type' && topShowData.name === 'Starred')">
-          <i class="ri-add-line"></i>
+          <i class="ri-add-line ri-xl"></i>
           New
         </div>
       </div>
@@ -82,7 +82,7 @@
           </div>
           <div class="detail_title_operate">
             <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
-            <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>
+<!--            <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>-->
           </div>
         </div>
 
@@ -98,7 +98,7 @@
       </div>
       <div class="detail_content">
         <div v-for="file in currentClickItem.files" class="detail_item">
-          <div class="detail_item_file">
+          <div class="detail_item_filename_wrapper">
             <div>
               {{ file.filename }}
             </div>

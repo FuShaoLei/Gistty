@@ -15,16 +15,45 @@ flex-center()
   display flex
   align-items center
 
-cursor()
+cursor-text()
   cursor pointer
 
 
 button()
   padding spacing-small
-  cursor()
+  cursor-text()
 
 
 text-overflow-ellipsis()
   white-space nowrap
   overflow hidden
   text-overflow ellipsis
+
+
+text-hover-active()
+  &:hover
+    color var(--color-theme)
+  &:active
+    color var(--color-hover)
+
+border-hover-active()
+  &:hover
+    color var(--color-theme)
+    border-color var(--color-theme)
+  &:active
+    color var(--color-hover)
+    border-color var(--color-hover)
+
+tag-normal-style()
+  border border-style
+  border-radius 20px
+  padding (spacing-mini/2) spacing-mini
+  cursor-text()
+  border-hover-active()
+  i
+    color var(--color-theme)
+
+
+stick-top()
+  position sticky
+  top 0
