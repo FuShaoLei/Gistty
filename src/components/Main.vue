@@ -60,9 +60,9 @@
             {{ topShowData.name }}
           </div>
         </div>
-        <div class="list_button_plus standard_button" @click="openAddNewGistDialog" v-if="!(topShowData.type === 'type' && topShowData.name === 'Starred')">
-          <i class="ri-add-line ri-xl"></i>
-          NEW
+        <div class="list_button_plus" @click="openAddNewGistDialog" v-if="!(topShowData.type === 'type' && topShowData.name === 'Starred')">
+          <i class="ri-add-line"></i>
+          New
         </div>
       </div>
 
@@ -289,9 +289,10 @@ const handleClickLeftItem = async (data) => {
   console.log(data)
   currentClickItem.value = data
 
-  if (data.rawContent === undefined) {
-    currentClickItem.value = await handleGetRawContentData(data)
-  }
+  // TODO 此处有bug
+  // if (data.rawContent === undefined) {
+  //   currentClickItem.value = await handleGetRawContentData(data)
+  // }
 
   detailContainerRef.value.scrollIntoView({ block: 'start' });
 }
