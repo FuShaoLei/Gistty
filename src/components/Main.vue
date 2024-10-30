@@ -121,8 +121,7 @@
         @close="closeAddOrUpdateDialog"
         @confirm="handleConfirmAddOrUpdateDialog"/>
 
-    <LoginDialog :show-dialog="isShowLoginDialog"
-                 v-if="isShowLoginDialog"
+    <LoginDialog v-model="isShowLoginDialog"
                 @close="closeLoginDialog"
                 @confirm="confirmLoginDialog"/>
 
