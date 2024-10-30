@@ -1,9 +1,9 @@
 <template>
   <CustomDialog
-      :dialog-width="300"
       v-model="showDialog"
       title-text="Login"
-      :show-title-close="false">
+      :show-title-close="false"
+      :show-footer="false">
     <div class="login_container">
       <div>
         <input type="text" placeholder="scope:gist" class="custom_input" v-model="inputToken"/>

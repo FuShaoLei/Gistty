@@ -23,3 +23,17 @@
     font-size 1.1rem
   .custom_component_dialog_title_close_btn
     cursor-text()
+    text-hover-active()
+
+
+.custom_component_dialog_footer_container
+  padding spacing-small
+  flex-between-center()
+  div
+    flex 1
+  .cancel_button
+    @extend .border_text_center_button
+    margin-right (spacing-small / 2)
+  .confirm_button
+    @extend .theme_text_center_button
+    margin-left (spacing-small / 2)

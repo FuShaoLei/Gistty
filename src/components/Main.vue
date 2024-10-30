@@ -127,8 +127,7 @@
 
     <SecondConfirmDialog
         title="Confirm Logout ?"
-        :show-dialog="isShowLogoutConfirmDialog"
-        v-if="isShowLogoutConfirmDialog"
+        v-model="isShowLogoutConfirmDialog"
         @close="closeLogoutConfirmDialog"
         @confirm="confirmLogoutConfirmDialog"/>
 
