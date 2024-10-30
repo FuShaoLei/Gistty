@@ -290,9 +290,9 @@ const handleClickLeftItem = async (data) => {
   currentClickItem.value = data
 
   // TODO 此处有bug
-  // if (data.rawContent === undefined) {
-  //   currentClickItem.value = await handleGetRawContentData(data)
-  // }
+  if (data.rawContent === undefined) {
+    currentClickItem.value = await handleGetRawContentData(data)
+  }
 
   detailContainerRef.value.scrollIntoView({ block: 'start' });
 }

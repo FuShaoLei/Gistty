@@ -1,18 +1,17 @@
 <template>
-  <CustomDialog :dialog-width="200">
+  <div class="custom_dialog_wrapper">
     <div class="login_container">
       <div>
         <input type="text" placeholder="Input Token" class="custom_input" v-model="inputToken"/>
       </div>
-      <div class="login_button standard_button" @click="handleLoginButton">
+      <div class="login_button" @click="handleLoginButton">
         <i class="ri-login-circle-line ri-xl"></i>
       </div>
     </div>
-  </CustomDialog>
+  </div>
 </template>
 
 <script setup="LoginDialog">
-import CustomDialog from "../customComponents/CustomDialog.vue";
 import {ref} from "vue";
 const props = defineProps({
   showDialog: {
