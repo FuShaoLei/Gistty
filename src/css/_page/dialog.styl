@@ -18,13 +18,67 @@
     font-size 1rem
     margin-bottom (spacing-mini * 3/4)
   .edit_title_input
-    border border-style
-    padding spacing-small
-    width (100% - spacing-small / 2)
+    input
+      border border-style
+      padding spacing-small
+      width (100% - spacing-small / 2)
 
 
 .edit_tags_groups
   display flex
+  > div
+    margin-right spacing-mini
 .edit_tags_item
   flex-between-center()
   tag-normal-style()
+  .edit_tags_item_label
+    padding-right (spacing-mini/2)
+  .edit_tags_item_btn
+    border-left border-style
+    padding-left (spacing-mini/2)
+
+
+.edit_tags_plus
+  tag-normal-style()
+  border-color var(--color-theme)
+  color var(--color-theme)
+
+
+.manage_tags_popup_container
+  width 200px
+  background var(--color-bg)
+  border border-theme-style
+  border-radius border-radius-small
+  padding spacing-small
+  z-index 50
+  display none
+  position absolute
+  top 0
+  left 0
+  .manage_tags_group
+    margin-top spacing-mini
+  .manage_tags_search_container
+    border-bottom border-style
+    padding spacing-mini
+  .manage_tags_item
+    flex-between-center()
+    cursor-text()
+    padding spacing-mini
+    border-radius border-radius-small
+    &:hover
+      background var(--color-hover)
+  .manage_tags_item.active
+    color var(--color-theme)
+  .manage_tags_operate_container
+    margin-top spacing-mini
+    flex-center()
+    div
+      flex 1
+      text-align center
+      cursor-text()
+    .manage_tags_operate_cancel
+      @extend .border_text_center_button
+      margin-right (spacing-mini / 2)
+    .manage_tags_operate_confirm
+      @extend .theme_text_center_button
+      margin-left (spacing-mini / 2)

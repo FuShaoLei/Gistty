@@ -16,9 +16,9 @@
               <i class="ri-hashtag"></i>
               {{ tag }}
             </div>
-            <div class="edit_tags_item_btn text-hover" @click="handleClickRemoveTag(tag)"><i class="ri-close-line"></i></div>
+            <div class="edit_tags_item_btn" @click="handleClickRemoveTag(tag)"><i class="ri-close-line"></i></div>
           </div>
-          <div class="edit_tags_plus text-hover" @click="handleClickManageTags" ref="manageTagsBtnRef">
+          <div class="edit_tags_plus" @click="handleClickManageTags" ref="manageTagsBtnRef">
             <i class="ri-list-check"></i>
             Select Tags
           </div>
