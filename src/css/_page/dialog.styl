@@ -15,13 +15,12 @@
     margin-bottom spacing-middle
   .label
     font-weight 900
-    font-size 1rem
-    margin-bottom (spacing-mini * 3/4)
+    margin-bottom spacing-mini
   .edit_title_input
+    border border-style
+    padding spacing-mini
     input
-      border border-style
-      padding spacing-small
-      width (100% - spacing-small / 2)
+      width 100%
 
 
 .edit_tags_groups
@@ -77,8 +76,48 @@
       text-align center
       cursor-text()
     .manage_tags_operate_cancel
-      @extend .border_text_center_button
+      @extend .border_text_center_mini_button
       margin-right (spacing-mini / 2)
     .manage_tags_operate_confirm
-      @extend .theme_text_center_button
+      @extend .theme_text_center_mini_button
       margin-left (spacing-mini / 2)
+
+
+
+.edit_item
+  border border-style
+  margin-bottom spacing-small
+  .markdown-body
+    padding spacing-mini
+
+.edit_item_filename_group
+  border-bottom  border-style
+  padding spacing-mini
+  flex-center()
+  input
+    width 100%
+  .filename_close_btn
+    text-hover-active()
+    cursor-text()
+
+.edit_item_content
+  padding spacing-mini
+  textarea
+    width 100%
+
+.footer_btn_wrapper
+  margin-top spacing-small
+  flex-between-center()
+  .add_file_button
+    @extend .border_text_center_mini_button
+  .cancel_button
+    @extend .border_text_center_mini_button
+    margin-right (spacing-mini / 2)
+  .save_button
+    @extend .theme_text_center_mini_button
+    margin-left (spacing-mini / 2)
+  .button
+    width 100px
+
+.footer_btn_right_wrapper
+  flex-center()

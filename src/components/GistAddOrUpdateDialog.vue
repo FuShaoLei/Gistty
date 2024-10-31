@@ -56,13 +56,13 @@
 
       <div class="files_group_label label">FILES</div>
       <div class="edit_item" v-for="(item, index) in currentEditData.files" :key="index">
-        <div class="edit_item_filename">
+        <div class="edit_item_filename_group">
           <input type="text" placeholder="Filename including extension" class="custom_input" v-model="currentEditData.files[index].filename"/>
           <div v-if="(currentEditData.files[index].filename !== null && currentEditData.files[index].filename.endsWith('.md'))"
                class="preview_btn text-hover" @click="handleClickPreview">
             <i :class="['ri-xl', isMarkDownPreview ? 'ri-eye-off-line':'ri-eye-line']"></i>
           </div>
-          <div class="filename_close_btn text-hover" v-if="currentEditData.files.length > 1" @click="removeFile(index)"><i class="ri-close-line ri-xl"></i></div>
+          <div class="filename_close_btn" v-if="currentEditData.files.length > 1" @click="removeFile(index)"><i class="ri-close-line ri-xl"></i></div>
         </div>
         <div class="edit_item_content" v-if="(currentEditData.files[index].filename !== null && (!currentEditData.files[index].filename.endsWith('.md') || currentEditData.files[index].filename.endsWith('.md') && !isMarkDownPreview))">
           <textarea ref="mContentRef" id="message" name="message" rows="20" cols="50" placeholder="input here " class="custom_textarea"
@@ -73,20 +73,20 @@
         </div>
       </div>
 
-      <div class="add_file_wrapper">
-        <div class="add_file_button custom_button" @click="handleAddFile">
+      <div class="footer_btn_wrapper">
+        <div class="add_file_button button" @click="handleAddFile">
           <i class="ri-add-line"></i>
           Add File
         </div>
 
-        <div>
-          <div class="custom_button cancel_button" @click="closeDialog">
+        <div class="footer_btn_right_wrapper">
+          <div class="cancel_button button" @click="closeDialog">
             <i class="ri-close-line"></i>
             Cancel
           </div>
-          <div class="custom_button" @click="saveGist">
+          <div class="save_button button" @click="saveGist">
             <i class="ri-save-line"></i>
-            Save Gist
+            Save
           </div>
         </div>
       </div>

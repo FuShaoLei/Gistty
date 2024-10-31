@@ -13,8 +13,21 @@
   background var(--color-theme)
   text-align center
 
+.theme_text_center_mini_button
+  @extend .standard_button
+  padding (spacing-mini / 2)
+  background var(--color-theme)
+  text-align center
+
+
 .border_text_center_button
   @extend .standard_button
+  border border-theme-style
+  text-align center
+
+.border_text_center_mini_button
+  @extend .standard_button
+  padding (spacing-mini / 2)
   border border-theme-style
   text-align center
 
