@@ -116,8 +116,7 @@
 
     <GistAddOrUpdateDialog
         ref="gistAddOrUpdateDialogRef"
-        :show-dialog="isOpenAddOrUpdateDialog"
-        v-if="isOpenAddOrUpdateDialog"
+        v-model="isOpenAddOrUpdateDialog"
         @close="closeAddOrUpdateDialog"
         @confirm="handleConfirmAddOrUpdateDialog"/>
 

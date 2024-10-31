@@ -1,15 +1,15 @@
 <template>
-  <div class="custom_dialog_wrapper">
+  <CustomDialog v-model="showDialog" :show-footer="false" :show-title="false" :dialog-width="700">
     <div class="edit_container">
-      <div class="edit_title">
-        <div class="edit_title_label">DESCRIPTION</div>
+      <div class="edit_title group">
+        <div class="edit_title_label label">DESCRIPTION</div>
         <div class="edit_title_input">
-          <input type="text" placeholder="Gist description" class="custom_input " v-model="currentEditData.description"/>
+          <input type="text" placeholder="Gist description" v-model="currentEditData.description"/>
         </div>
       </div>
 
-      <div class="edit_tags_container">
-        <div class="edit_tags_groups_label">TAGS</div>
+      <div class="edit_tags_container group">
+        <div class="edit_tags_groups_label label">TAGS</div>
         <div class="edit_tags_groups">
           <div class="edit_tags_item" v-for="tag in currentEditTag">
             <div class="edit_tags_item_label">
@@ -54,7 +54,7 @@
 
       </div>
 
-      <div class="files_group_label">FILES</div>
+      <div class="files_group_label label">FILES</div>
       <div class="edit_item" v-for="(item, index) in currentEditData.files" :key="index">
         <div class="edit_item_filename">
           <input type="text" placeholder="Filename including extension" class="custom_input" v-model="currentEditData.files[index].filename"/>
@@ -91,27 +91,22 @@
         </div>
       </div>
     </div>
-  </div>
+  </CustomDialog>
 
 </template>
 
 <script setup="GistAddOrUpdateDialog">
+import CustomDialog from "../customComponents/CustomDialog.vue";
 import {computed, inject, onMounted, onBeforeUnmount, ref, nextTick} from "vue";
 import { marked } from 'marked';
 import {parseTag, removeTags} from "../utils/GistUtils.js";
 
 const tagMap = inject('tagMap', undefined)
-
 const tagMapArr = ref([])
 
-const props = defineProps({
-  showDialog: {
-    type: Boolean,
-    required: true
-  }
-})
 const emit = defineEmits(['close', 'confirm'])
 
+const showDialog = defineModel()
 
 const manageTagsPlusItemRef = ref(null)
 const manageTagsBtnRef = ref(null)
@@ -335,9 +330,3 @@ const handleClickRemoveTag = (removeTag) => {
 defineExpose({init})
 
 </script>
-<style scoped>
-@import url('src/CustomDialog.css');
-@import url('src/style.css');
-
-
-</style>
