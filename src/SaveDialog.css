@@ -1,0 +1,240 @@
+
+.edit_container {
+    width: 700px;
+    background: rgb(33, 33, 33);
+    margin: auto;
+    margin-top: 70px;
+
+    padding-bottom: 2px;
+    padding-top: var(--standard-distance);
+}
+
+.edit_title {
+    margin: var(--standard-distance);
+}
+
+.edit_title_input {
+    margin-top: 6px;
+    border: 1px solid var(--color-border) ;
+}
+
+.files_group_label {
+    margin-left: var(--standard-distance);
+    margin-bottom: 6px;
+}
+
+.edit_title_label,.files_group_label,.edit_tags_groups_label {
+    font-weight: bolder;
+    color: var(--color-info);
+    /*font-size: 1rem;*/
+    /*color: var(--color-theme);*/
+}
+
+.custom_input {
+    display: block;
+    padding: 10px;
+    width: calc(100% - 20px);
+    color: rgb(255, 255, 255);
+
+    background: none;
+    outline: none;
+    border: 0px;
+}
+
+.custom_textarea {
+    background: none;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    width: calc(100% - 20px);
+    outline: none;
+    border: 0px;
+    resize: vertical;
+}
+
+
+.edit_item {
+    margin: var(--standard-distance);
+    margin-top: 0;
+    border: 1px solid var(--color-border);
+}
+
+.edit_item_filename {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.add_file_wrapper {
+    margin: var(--standard-distance);
+    margin-top: calc(var(--standard-distance) + 5px);
+
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.custom_button {
+    display: inline;
+    background: rgb(72, 72, 72);
+    padding: 5px 7px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.custom_button:hover {
+    background: var(--color-hover);
+}
+.custom_button:active {
+    background: var(--color-active);
+}
+
+.text-hover:hover {
+    color: var(--color-theme);
+}
+
+.text-hover:active {
+    color: var(--color-text-active);
+}
+
+.cancel_button {
+    margin-right: 10px;
+}
+
+.edit_item_filename {
+    display: flex;
+    align-items: baseline;
+}
+
+.filename_close_btn {
+    cursor: pointer;
+    height: 100%;
+    padding: 3px 15px;
+}
+
+.preview_btn {
+    cursor: pointer;
+    height: 100%;
+    padding: 3px 15px;
+}
+
+.edit_tags_container {
+    margin: var(--standard-distance);
+}
+.edit_tags_groups {
+    display: flex;
+    margin-top: 6px;
+}
+
+.edit_tags_item {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+
+    display: flex;
+    align-content: center;
+    margin-right: 5px;
+
+    border-radius: 20px;
+    padding: 3px 8px;
+}
+
+.edit_tags_item_btn {
+    /*padding: 3px 2px;*/
+    cursor: pointer;
+    padding-left: 3px;
+}
+
+.edit_tags_plus {
+    background: var(--color-bg);
+    border: 1px solid var(--color-theme);
+    color: var(--color-theme);
+    cursor: pointer;
+
+    border-radius: 200px;
+    padding: 3px 8px;
+}
+
+.edit_tags_plus:hover {
+    border: 1px solid var(--color-theme-2);
+    color: var(--color-theme-2);
+}
+
+.manage_tags_popup_container {
+
+    background: var(--color-bg);
+    border: 1px solid var(--color-theme);
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+    z-index: 50;
+
+    display: none;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+}
+.manage_tags_group {
+    margin-top: 5px;
+}
+
+.manage_tags_item {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.manage_tags_item.active {
+    color: var(--color-theme);
+}
+
+
+.manage_tags_item:hover {
+    background: var(--color-hover);
+}
+
+.manage_tags_search_container {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.manage_tags_operate_container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    /* 平分空间 */
+}
+
+.manage_tags_operate_container div {
+    flex: 1;
+    /* 每个 div 占据相同的宽度 */
+    text-align: center;
+    padding: 4px 2px;
+    /*background: rgb(52, 52, 52);*/
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.manage_tags_operate_container div:first-child{
+    margin-right: 5px;
+}
+
+.manage_tags_operate_container div:last-child{
+    margin-left: 5px;
+}
+
+.manage_tags_operate_cancel {
+    background: rgb(52, 52, 52);
+}
+.manage_tags_operate_cancel:hover {
+    background: rgb(42, 42, 42);
+}
+
+.manage_tags_operate_confirm {
+    background: var(--color-theme);
+}
+
+.manage_tags_operate_confirm:hover {
+    background: var(--color-theme-2);
+}

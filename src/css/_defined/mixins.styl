@@ -1,0 +1,56 @@
+
+border-style = 1px solid var(--color-border)
+border-theme-style = 1px solid var(--color-theme)
+
+flex-column-center()
+  display flex
+  flex-direction column
+  align-items center
+
+flex-between-center()
+  display flex
+  align-items center
+  justify-content space-between
+
+flex-center()
+  display flex
+  align-items center
+
+cursor-text()
+  cursor pointer
+
+
+button()
+  padding spacing-small
+  cursor-text()
+
+
+text-overflow-ellipsis()
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
+
+
+text-hover-active()
+  &:hover
+    color var(--color-theme)
+
+border-hover-active()
+  &:hover
+    color var(--color-theme)
+    border-color var(--color-theme)
+
+
+tag-normal-style()
+  border border-style
+  border-radius 20px
+  padding (spacing-mini/2) spacing-mini
+  cursor-text()
+  border-hover-active()
+  i
+    color var(--color-theme)
+
+
+stick-top()
+  position sticky
+  top 0

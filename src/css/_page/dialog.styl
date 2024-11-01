@@ -1,0 +1,129 @@
+.login_container
+  padding spacing-small
+  input
+    padding spacing-mini
+    width (100% - 2 * spacing-mini)
+
+
+.login_button
+  @extend .theme_text_center_button
+  margin-top spacing-small
+
+.edit_container
+  margin spacing-small
+  .group
+    margin-bottom spacing-middle
+  .label
+    font-weight 900
+    margin-bottom spacing-mini
+  .edit_title_input
+    border border-style
+    padding spacing-mini
+    input
+      width 100%
+
+
+.edit_tags_groups
+  display flex
+  > div
+    margin-right spacing-mini
+.edit_tags_item
+  flex-between-center()
+  border border-style
+  border-radius 20px
+  padding (spacing-mini/2) spacing-mini
+  .edit_tags_item_label
+    padding-right spacing-mini
+  .edit_tags_item_btn
+    border-left border-style
+    padding-left spacing-mini
+    cursor-text()
+    text-hover-active()
+
+
+.edit_tags_plus
+  tag-normal-style()
+  border-color var(--color-theme)
+  color var(--color-theme)
+  &:hover
+    border-color var(--color-theme-hover)
+
+
+.manage_tags_popup_container
+  width 200px
+  background var(--color-bg)
+  border border-theme-style
+  border-radius border-radius-small
+  padding spacing-small
+  z-index 50
+  display none
+  position absolute
+  top 0
+  left 0
+  .manage_tags_group
+    margin-top spacing-mini
+  .manage_tags_search_container
+    border-bottom border-style
+    padding spacing-mini
+  .manage_tags_item
+    flex-between-center()
+    cursor-text()
+    padding spacing-mini
+    border-radius border-radius-small
+    &:hover
+      background var(--color-hover)
+  .manage_tags_item.active
+    color var(--color-theme)
+  .manage_tags_operate_container
+    margin-top spacing-mini
+    flex-center()
+    div
+      flex 1
+      text-align center
+      cursor-text()
+    .manage_tags_operate_cancel
+      @extend .border_text_center_mini_button
+      margin-right (spacing-mini / 2)
+    .manage_tags_operate_confirm
+      @extend .theme_text_center_mini_button
+      margin-left (spacing-mini / 2)
+
+
+
+.edit_item
+  border border-style
+  margin-bottom spacing-small
+  .markdown-body
+    padding spacing-mini
+
+.edit_item_filename_group
+  border-bottom  border-style
+  padding spacing-mini
+  flex-center()
+  input
+    width 100%
+  .filename_close_btn,.preview_btn
+    text-hover-active()
+    cursor-text()
+
+.edit_item_content
+  padding spacing-mini
+  textarea
+    width 100%
+
+.footer_btn_wrapper
+  margin-top spacing-small
+  flex-between-center()
+  .add_file_button
+    @extend .border_text_center_mini_button
+  .cancel_button
+    @extend .border_text_center_mini_button
+    margin-right (spacing-mini / 2)
+  .save_button
+    @extend .theme_text_center_mini_button
+    margin-left (spacing-mini / 2)
+  .button
+    width 80px
+
+.footer_btn_right_wrapper
+  flex-center()

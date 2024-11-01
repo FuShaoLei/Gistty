@@ -1,0 +1,39 @@
+.custom_component_dialog_wrapper
+  position fixed
+  z-index 99
+  left 0
+  top 0
+  width 100%
+  height 100%
+  background rgba(0, 0, 0, 0.5)
+  overflow auto
+
+.custom_component_dialog_container
+  background var(--color-bg)
+  margin auto
+  margin-top: 5%
+  border border-style
+  border-radius border-radius-small
+
+.custom_component_dialog_title_container
+  flex-between-center()
+  padding spacing-small
+  border-bottom border-style
+  .custom_component_dialog_title_text
+    font-size 1.1rem
+  .custom_component_dialog_title_close_btn
+    cursor-text()
+    text-hover-active()
+
+
+.custom_component_dialog_footer_container
+  padding spacing-small
+  flex-between-center()
+  div
+    flex 1
+  .cancel_button
+    @extend .border_text_center_button
+    margin-right (spacing-small / 2)
+  .confirm_button
+    @extend .theme_text_center_button
+    margin-left (spacing-small / 2)

@@ -1,0 +1,50 @@
+.standard_button
+  button()
+  border-radius border-radius-small
+  &:hover
+    background var(--color-hover)
+
+
+.standard_button.active
+  background var(--color-hover)
+
+.theme_text_center_button
+  @extend .standard_button
+  background var(--color-theme)
+  text-align center
+  color color-high
+  &:hover
+    background var(--color-theme-hover)
+
+
+.theme_text_center_mini_button
+  @extend .theme_text_center_button
+  padding (spacing-mini / 2)
+
+
+.border_text_center_button
+  @extend .standard_button
+  border border-theme-style
+  text-align center
+
+.border_text_center_mini_button
+  @extend .standard_button
+  padding (spacing-mini / 2)
+  border border-style
+  text-align center
+
+
+input
+  display block
+  color var(--color-text)
+  background none
+  outline none
+  border 0
+
+
+textarea
+  background: none;
+  color var(--color-text)
+  outline none
+  border 0
+  resize vertical
