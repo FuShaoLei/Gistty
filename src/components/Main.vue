@@ -82,7 +82,7 @@
           </div>
           <div class="detail_title_operate">
             <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleEditGist"><i class="ri-file-edit-line ri-xl"></i></div>
-<!--            <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>-->
+            <div v-if="!(topShowData.type === 'type' && topShowData.name === 'Star')" class="text-hover" @click="handleDeleteGist"><i class="ri-delete-bin-line ri-xl"></i></div>
           </div>
         </div>
 
@@ -132,8 +132,7 @@
 
     <SecondConfirmDialog
         title="Confirm Delete ?"
-        :show-dialog="isShowDeleteConfirmDialog"
-        v-if="isShowDeleteConfirmDialog"
+        v-model="isShowDeleteConfirmDialog"
         @close="closeDeleteConfirmDialog"
         @confirm="confirmDeleteConfirmDialog"/>
 
