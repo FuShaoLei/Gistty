@@ -12,12 +12,14 @@
   @extend .standard_button
   background var(--color-theme)
   text-align center
+  color color-high
+  &:hover
+    background var(--color-theme-hover)
+
 
 .theme_text_center_mini_button
-  @extend .standard_button
+  @extend .theme_text_center_button
   padding (spacing-mini / 2)
-  background var(--color-theme)
-  text-align center
 
 
 .border_text_center_button
@@ -28,7 +30,7 @@
 .border_text_center_mini_button
   @extend .standard_button
   padding (spacing-mini / 2)
-  border border-theme-style
+  border border-style
   text-align center
 
 

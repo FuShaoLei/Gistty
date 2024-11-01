@@ -1,5 +1,5 @@
 <template>
-  <CustomDialog v-model="showDialog" :show-footer="false" :show-title="false" :dialog-width="700">
+  <CustomDialog v-model="showDialog" :show-footer="false" :title-text="title" :show-title="true" :dialog-width="700">
     <div class="edit_container">
       <div class="edit_title group">
         <div class="edit_title_label label">DESCRIPTION</div>
@@ -75,17 +75,11 @@
 
       <div class="footer_btn_wrapper">
         <div class="add_file_button button" @click="handleAddFile">
-          <i class="ri-add-line"></i>
           Add File
         </div>
 
         <div class="footer_btn_right_wrapper">
-          <div class="cancel_button button" @click="closeDialog">
-            <i class="ri-close-line"></i>
-            Cancel
-          </div>
           <div class="save_button button" @click="saveGist">
-            <i class="ri-save-line"></i>
             Save
           </div>
         </div>
@@ -151,6 +145,8 @@ const manageTagMap = computed(() => {
   }
 })
 
+const title = ref('')
+
 const isMarkDownPreview = ref(false)
 
 const closeDialog = () => emit('close')
@@ -213,6 +209,8 @@ const init = (data = undefined) => {
   }
 
   if (data === undefined) {
+    title.value = "Add Snippet"
+
     const now = new Date();
 
   // 格式化日期
@@ -233,6 +231,7 @@ const init = (data = undefined) => {
     }, 200)
 
   } else {
+    title.value = "Edit Snippet"
     currentEditData.value = Object.assign({}, {
       gist_id: data.id,
       description: removeTags(data.description),

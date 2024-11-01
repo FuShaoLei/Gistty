@@ -22,7 +22,7 @@
           :class="['type_button standard_button', (topShowData.type === 'type' && topShowData.name === 'All Snippets') ? 'active' : '']"
           @click="handleClickType('All Snippets')"
       >
-        <i class="ri-asterisk"></i>
+        <i class="ri-user-line"></i>
         All Snippets
       </div>
       <div
@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="list_button_plus" @click="openAddNewGistDialog" v-if="!(topShowData.type === 'type' && topShowData.name === 'Starred')">
-          <i class="ri-add-line ri-xl"></i>
+          <i class="ri-file-add-fill ri-xl"></i>
           New
         </div>
       </div>
