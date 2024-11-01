@@ -43,10 +43,11 @@ const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 async function createWindow() {
-  win = new BrowserWindow({
+  const mOptions = {
     width: 1200,
     height: 900,
-    title: 'Main window',
+    title: 'Gistty',
+    frame: true,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -57,7 +58,13 @@ async function createWindow() {
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       // contextIsolation: false,
     },
-  })
+  }
+
+  if (process.platform === 'win32') {
+    mOptions.frame = false
+  }
+
+  win = new BrowserWindow(mOptions)
 
   if (VITE_DEV_SERVER_URL) { // #298
     win.loadURL(VITE_DEV_SERVER_URL)
