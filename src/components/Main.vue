@@ -18,22 +18,25 @@
       </div>
     </div>
     <div :class="['type_container', isToggle ? 'type_gone':'']">
-      <div
-          :class="['type_button standard_button', (topShowData.type === 'type' && topShowData.name === 'All Snippets') ? 'active' : '']"
-          @click="handleClickType('All Snippets')"
-      >
-        <i class="ri-user-line"></i>
-        All Snippets
-      </div>
-      <div
-          :class="['type_button standard_button', (topShowData.type === 'type' && topShowData.name === 'Starred') ? 'active' : '']"
-          @click="handleClickType('Starred')"
-      >
-        <i class="ri-star-line"></i>
-        Starred
-      </div>
-      <div class="tag_container">
+      <div class="type_top_container">
+        <div
+            :class="['type_button standard_button', (topShowData.type === 'type' && topShowData.name === 'All Snippets') ? 'active' : '']"
+            @click="handleClickType('All Snippets')"
+        >
+          <i class="ri-user-line"></i>
+          All Snippets
+        </div>
+        <div
+            :class="['type_button standard_button', (topShowData.type === 'type' && topShowData.name === 'Starred') ? 'active' : '']"
+            @click="handleClickType('Starred')"
+        >
+          <i class="ri-star-line"></i>
+          Starred
+        </div>
         <div class="tag_line"></div>
+      </div>
+
+      <div class="tag_container">
         <div
             :class="['tag_button standard_button', (topShowData.type === 'tag' && topShowData.name === value[0]) ? 'active' : '']"
              v-for="(value, key) in tagMap" @click="handleClickTag(value[0])" :key="key">
@@ -232,7 +235,6 @@ const getGistArr = async () => {
     })
 
     allGistData.value = [...newAllData]
-    // TODO 可能要处理一些东西
 
     if (topShowData.value.type === 'tag') {
       handleClickTag(topShowData.value.name)
