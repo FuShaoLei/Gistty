@@ -120,13 +120,8 @@ const manageTagMap = computed(() => {
     //   }
     // })
 
-    console.log("tagMapArr")
-    console.log(tagMapArr.value)
-
     const fuck = [...tagMapArr.value]
 
-    console.log("fuck")
-    console.log(fuck)
 
     returnTag = returnTag.filter(value => value[0].includes(tagSearchText.value))
 
@@ -163,8 +158,6 @@ const currentEditData = ref({
 
 const saveGist = () => {
   // TODO 检查合法性
-  console.log("saveGist")
-  console.log(currentEditData.value)
 
   const tmpData = {...currentEditData.value}
   const requestFiles = tmpData.files.reduce((acc, item) => {
@@ -181,15 +174,11 @@ const saveGist = () => {
     Object.assign(tmpData, {public: false})
   }
 
-  console.log("after")
-  console.log(tmpData)
-
   emit('confirm', tmpData)
 
 }
 
 const handleAddFile = () => {
-  console.log("handleAddFile")
   currentEditData.value.files.push({ content: "", filename: "" })
 }
 
@@ -221,7 +210,6 @@ const init = (data = undefined) => {
         String(now.getMinutes()).padStart(2, '0') + ':' +
         String(now.getSeconds()).padStart(2, '0');
 
-    console.log(formattedDate);
 
     currentEditData.value.description = formattedDate;
     currentEditData.value.files = [{content: "",  filename: "README.md"}]

@@ -109,9 +109,12 @@
                <div class="text-hover" @click="handleClickCopy(file.rawContent)"><i class="ri-file-copy-line ri-xl"></i></div>
              </div>
           </div>
-          <div class="detail_item_content"><pre v-if="file.language !== 'Markdown'">{{ file.rawContent}}</pre>
-            <div class="markdown-body" v-else-if="file.rawContent !==undefined " v-html="marked.parse(file.rawContent)">
-            </div>
+          <div class="detail_item_content">
+            <pre v-if="file.language !== 'Markdown' && file.language === 'Text' && file.rawContent !== undefined">{{ file.rawContent}}</pre>
+            <pre v-if="file.language !== 'Markdown' && file.language !== 'Text' && file.rawContent !== undefined">
+              <code :class="'hljs', 'language-'+file.language" v-html="hljs.highlightAuto(file.rawContent).value"></code>
+            </pre>
+            <div class="markdown-body" v-else-if="file.language === 'Markdown' && file.rawContent !== undefined " v-html="marked.parse(file.rawContent)"/>
           </div>
         </div>
       </div>
@@ -146,7 +149,7 @@
 </template>
 <script setup="GistTest">
 import {CreateGist, DeleteGist, getGist, getRaw, getStarGist, UpdateGist} from "../api/GithubApi.js";
-import {getCurrentInstance, provide, ref} from "vue";
+import {getCurrentInstance, provide, ref, onMounted} from "vue";
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
 import LoginDialog from "./LoginDialog.vue";
 import {useSettingsStore} from "../stores/settingsData.js";
@@ -154,6 +157,12 @@ import SecondConfirmDialog from "./SecondConfirmDialog.vue";
 const { proxy } =  getCurrentInstance()
 import { marked } from 'marked';
 import {parseTag, removeTags} from "../utils/GistUtils.js";
+import hljs from 'highlight.js';
+import 'highlight.js/styles/pojoaque.css';
+
+onMounted(()=>{
+  hljs.highlightAll()
+})
 
 const detailContainerRef = ref(null)
 const gistAddOrUpdateDialogRef = ref(null)
@@ -207,21 +216,23 @@ const getGistArr = async () => {
     const res = await getGist();
     const newAllData = res.data;
 
-    const updatedDataPromises = newAllData.map(async (item) => {
-      const filePromises = Object.values(item.files).map(async (objValue) => {
-        const rawContent = await getContent(objValue.raw_url);
-        return Object.assign(objValue, {rawContent});
-      });
+    // const updatedDataPromises = newAllData.map(async (item) => {
+    //   const filePromises = Object.values(item.files).map(async (objValue) => {
+    //     const rawContent = await getContent(objValue.raw_url);
+    //     return Object.assign(objValue, {rawContent});
+    //   });
+    //
+    //   // 等待所有文件的内容都获取完
+    //   await Promise.all(filePromises);
+    //   return item;
+    // });
+    //
+    // // 等待所有数据的更新操作完成
+    // const latestData = await Promise.all(updatedDataPromises);
 
-      // 等待所有文件的内容都获取完
-      await Promise.all(filePromises);
-      return item;
-    });
+    // let latestData = newAllData
 
-    // 等待所有数据的更新操作完成
-    const latestData = await Promise.all(updatedDataPromises);
-
-    latestData.forEach(ele => {
+    newAllData.forEach(ele => {
       // 处理description和tag
       ele.showDescription = removeTags(ele.description)
 
@@ -283,15 +294,15 @@ const getContent = async (url) => {
 const currentClickItem = ref({})
 
 const handleClickLeftItem = async (data) => {
-  console.log("handleClickLeftItem")
-  console.log(data)
+  // console.log("handleClickLeftItem")
+  // console.log(data)
   currentClickItem.value = data
 
-  // TODO 此处有bug
-  if (data.rawContent === undefined) {
+  if (Object.values(data.files)[0].rawContent === undefined) {
     currentClickItem.value = await handleGetRawContentData(data)
   }
 
+  hljs.highlightAll()
   detailContainerRef.value.scrollIntoView({ block: 'start' });
 }
 
@@ -309,21 +320,13 @@ const closeAddOrUpdateDialog = () => {
 }
 
 const handleConfirmAddOrUpdateDialog = (data) => {
-  console.log("handleConfirmAddOrUpdateDialog")
-  console.log(data)
 
   if (data.gist_id !== undefined) {
-    console.log("data.gist_id !== undefined")
-
     UpdateGist(data).then(res => {
-      console.log("updateGist")
-      console.log(res)
       handleRes(res)
     })
   } else {
-    console.log("data.gist_id === undefined")
     CreateGist(data).then(res => {
-      console.log(res)
       handleRes(res)
     })
   }
@@ -424,7 +427,6 @@ const handleDeleteGist = () => {
 const topShowData = ref({type: "type", name: "All Snippets"}) // default display All Snippets Gist
 
 const handleClickTag = (key) => {
-  console.log("handleClickTag", key)
 
   if (topShowData.value.type === "tag" && topShowData.value.name === key) {
     return

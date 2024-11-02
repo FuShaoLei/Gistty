@@ -344,14 +344,12 @@
 .markdown-body code,
 .markdown-body samp {
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-    font-size: 12px;
 }
 
 .markdown-body pre {
     margin-top: 0;
     margin-bottom: 0;
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-    font-size: 12px;
     word-wrap: normal;
 }
 
@@ -697,7 +695,7 @@
 .markdown-body tt {
     padding: .2em .4em;
     margin: 0;
-    font-size: 85%;
+    /*font-size: 85%;*/
     white-space: break-spaces;
     background-color: #656c7633;
     border-radius: 6px;
@@ -713,7 +711,7 @@
 }
 
 .markdown-body samp {
-    font-size: 85%;
+    /*font-size: 85%;*/
 }
 
 .markdown-body pre code {
@@ -742,11 +740,11 @@
 .markdown-body pre {
     padding: 1rem;
     overflow: auto;
-    font-size: 85%;
+    /*font-size: 85%;*/
     line-height: 1.45;
     color: #f0f6fc;
     background-color: #151b23;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
 }
 
 .markdown-body pre code,
@@ -766,7 +764,6 @@
 .markdown-body .csv-data th {
     padding: 5px;
     overflow: hidden;
-    font-size: 12px;
     line-height: 1;
     text-align: left;
     white-space: nowrap;
