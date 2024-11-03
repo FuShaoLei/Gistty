@@ -149,7 +149,7 @@
 </template>
 <script setup="GistTest">
 import {CreateGist, DeleteGist, getGist, getRaw, getStarGist, UpdateGist} from "../api/GithubApi.js";
-import {getCurrentInstance, provide, ref, onMounted} from "vue";
+import {getCurrentInstance, provide, ref, onMounted, onBeforeMount, computed} from "vue";
 import GistAddOrUpdateDialog from "./GistAddOrUpdateDialog.vue";
 import LoginDialog from "./LoginDialog.vue";
 import {useSettingsStore} from "../stores/settingsData.js";
@@ -160,9 +160,27 @@ import {parseTag, removeTags} from "../utils/GistUtils.js";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/pojoaque.css';
 
+const os = ref('')
+
 onMounted(()=>{
   hljs.highlightAll()
 })
+
+onBeforeMount(async () => {
+
+  window.ipcRenderer.invoke('get-os').then(mOs =>{
+    os.value = mOs;
+  })
+})
+
+const isMacos = computed(()=>{
+  return os.value === 'darwin'
+})
+
+const isWin = computed(()=>{
+  return os.value === 'win32'
+})
+
 
 const detailContainerRef = ref(null)
 const gistAddOrUpdateDialogRef = ref(null)

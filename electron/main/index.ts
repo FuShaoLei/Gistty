@@ -111,6 +111,10 @@ app.on('activate', () => {
   }
 })
 
+ipcMain.handle('get-os', () => {
+  return process.platform;
+});
+
 // New window example arg: new windows url
 ipcMain.handle('open-win', (_, arg) => {
   const childWindow = new BrowserWindow({
