@@ -106,7 +106,7 @@ const manageTagsPlusItemRef = ref(null)
 const manageTagsBtnRef = ref(null)
 const manageTagsPopupContainerRef = ref(null)
 
-
+const originFiles = ref([])
 const isCanPlusTags = ref(false)
 const tagSearchText = ref("")
 
@@ -160,8 +160,23 @@ const saveGist = () => {
   // TODO 检查合法性
 
   const tmpData = {...currentEditData.value}
-  const requestFiles = tmpData.files.reduce((acc, item) => {
-    acc[item.filename] = {content: item.content};
+
+  const tmpFiles = [...tmpData.files]
+  if (originFiles.value.length > 0) {
+    originFiles.value.forEach(originFile => {
+      if (!tmpFiles.some(ele => ele.filename === originFile.filename)) {
+        tmpFiles.push({filename: originFile.filename, content: null})
+      }
+    })
+  }
+
+  const requestFiles = tmpFiles.reduce((acc, item) => {
+    if (item.content === null) {
+      acc[item.filename] = null
+    } else {
+      acc[item.filename] = {content: item.content};
+    }
+
     return acc;
   }, {});
 
@@ -174,6 +189,7 @@ const saveGist = () => {
     Object.assign(tmpData, {public: false})
   }
 
+  originFiles.value = []
   emit('confirm', tmpData)
 
 }
@@ -230,7 +246,16 @@ const init = (data = undefined) => {
       }))
     })
 
-    currentEditTag.value = [...parseTag(data.description)]
+    originFiles.value = Object.entries(data.files).map(([filename, fileData]) => ({
+      filename,
+      content: fileData.rawContent
+    }))
+
+    const tags = parseTag(data.description)
+    if (tags && tags.length > 0) {
+      currentEditTag.value = [...parseTag(data.description)]
+    }
+
   }
 }
 

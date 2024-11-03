@@ -256,7 +256,7 @@ const getGistArr = async () => {
 
 
     if (currentClickItem.value.id !== undefined) {
-      currentClickItem.value = allGistData.value.find(ele => ele.id === currentClickItem.value.id)
+      currentClickItem.value = await handleGetRawContentData(allGistData.value.find(ele => ele.id === currentClickItem.value.id))
     }
 
   } catch (error) {
