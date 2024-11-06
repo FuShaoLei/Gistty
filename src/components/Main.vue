@@ -301,6 +301,7 @@ const handleClickLeftItem = async (data) => {
   if (Object.values(data.files)[0].rawContent === undefined) {
     currentClickItem.value = await handleGetRawContentData(data)
   }
+  handleLinkTarget()
 
   hljs.highlightAll()
   detailContainerRef.value.scrollIntoView({ block: 'start' });
@@ -475,6 +476,12 @@ const handleToggle = () => {
 const handleClickCopy = (text) => {
   navigator.clipboard.writeText(text)
   // TODO 提示复制成功
+}
+
+const handleLinkTarget = () => {
+  document.querySelectorAll('.markdown-body a').forEach(link => {
+    link.setAttribute('target', '_blank');
+  });
 }
 
 init()
